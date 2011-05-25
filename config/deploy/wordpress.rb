@@ -33,6 +33,12 @@ EOF
     run "ln -nfs #{shared_path}/wp-config.php #{release_path}/wp-config.php"
   end
 
+  task "Set permissions"
+  task :permissions do
+    run "chmod -f 755 #{release_path}/timthumb.php"
+    run "chmod -f 777 #{release_path}/cache"
+  end
+
 end
 
 namespace :db do

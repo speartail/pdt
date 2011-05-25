@@ -26,6 +26,15 @@ namespace :app do
   desc "Make configuration symlink"
   task :symlink do ; end
 
+  desc "Set permissions"
+  task :permissions do
+    run "chmod -f 550 #{release_path}/pear"
+    run "chmod -f 550 #{release_path}/mage"
+    %w[ media var ].each do |d|
+      run "chmod -f 777 #{release_path}/#{d}"
+    end
+  end
+
 end
 
 namespace :db do

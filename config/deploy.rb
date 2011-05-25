@@ -21,6 +21,7 @@ set :stages, %w(dev test prod)
 set :use_sudo, false
 
 before "deploy:setup", "config:bash", "app:config", "app:symlink"
+after  "deploy:update_code", "config:permissions"
 after  "db:restore", "db:config" # db:config is where we do DB contents replacements
 
 namespace :config do
