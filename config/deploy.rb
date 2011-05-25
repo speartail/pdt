@@ -1,5 +1,5 @@
 require 'capistrano/php'
-require 'FileUtils'
+require 'fileutils'
 require 'deploy/common' # load common settings
 if Dir.exists?('../wp-admin')
   is_wp=true
