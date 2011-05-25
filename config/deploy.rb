@@ -9,7 +9,7 @@ elsif Dir.exists?('../app')
   set :is_mag, true
   load 'deploy/magento'
 end
-load 'deploy/project' # place all overrides here
+load 'config/deploy/project' # place all overrides here
 require 'capistrano/ext/multistage'
 
 raise 'Neither WordPress nor Magento were found. Aborting...' unless :is_wp || :is_mag
