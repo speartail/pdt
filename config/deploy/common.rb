@@ -12,8 +12,8 @@ set :mag_admin_password, 'super_shazza'
 set :wp_debug, false
 set :wp_lang, ''
 
-if is_mag
+if :is_mag
   set :repository,  "git@github.com:nwt/magento.git"
-elsif is_wp
+elsif :is_wp
   set :repository,  "git@github.com:nwt/wordpress.git"
 end

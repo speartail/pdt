@@ -1,18 +1,18 @@
 require 'capistrano/php'
 require 'fileutils'
-require 'deploy/common' # load common settings
+load 'config/deploy/common'
 if Dir.exists?('../wp-admin')
-  is_wp=true
+  set :is_wp, true
   raise "You must create a symlink named default to the theme" unless File.exists?('../wp-content/themes/default')
-  require 'deploy/wordpress'
+  load 'deploy/wordpress'
 elsif Dir.exists?('../app')
-  is_mag=true
-  require 'deploy/magento'
+  set :is_mag, true
+  load 'deploy/magento'
 end
-require 'deploy/project' # place all overrides here
+load 'deploy/project' # place all overrides here
 require 'capistrano/ext/multistage'
 
-raise 'Neither WordPress nor Magento were found. Aborting...' unless is_wp || is_mag
+raise 'Neither WordPress nor Magento were found. Aborting...' unless :is_wp || :is_mag
 
 set :copy_exclude, [ '.git' ]
 set :default_stage, 'dev'
