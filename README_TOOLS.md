@@ -1,0 +1,10 @@
+# So what is this?
+
+A set of standard Capistrano/Rake tasks to use with WordPress and Magento projects.
+
+## Getting started
+1. Merge this into an existing project
+2. Create dev.rb, preprod.rb and prod.rb in config/deploy and adjust accordingly
+
+## Branches
+Need to add some details on common naming
