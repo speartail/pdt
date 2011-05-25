@@ -1,24 +1,24 @@
 require 'capistrano/php'
 require 'fileutils'
-load 'config/deploy/common'
+set :stages, %w(dev test prod)
+set :default_stage, 'dev'
+require 'capistrano/ext/multistage'
+load 'config/common'
 if Dir.exists?('../wp-admin')
-  set :is_wp, true
+  set :application, 'wordpress'
   raise "You must create a symlink named default to the theme" unless File.exists?('../wp-content/themes/default')
   load 'config/wordpress'
 elsif Dir.exists?('../app')
-  set :is_mag, true
+  set :application, 'magento'
   load 'config/magento'
 end
-load 'config/deploy/project' # place all overrides here
-require 'capistrano/ext/multistage'
+load 'config/project' # place all overrides here
 
-raise 'Neither WordPress nor Magento were found. Aborting...' unless :is_wp || :is_mag
+raise 'Neither WordPress nor Magento were found. Aborting...' unless :application
 
 set :copy_exclude, [ '.git' ]
-set :default_stage, 'dev'
 set :deploy_via, :remote_cache
 set :scm, :git
-set :stages, %w(dev test prod)
 set :use_sudo, false
 
 before "deploy:setup", "config:bash", "cache:setup", "app:config", "app:symlink"
@@ -40,6 +40,6 @@ namespace :db do
   task :pull do ; end
 end
 
-role :app, host
-role :web, host
-role :db,  host, :primary => true
+role(:app) { host }
+role(:web) { host }
+role(:db, :primary => true) { host }
