@@ -39,3 +39,7 @@ namespace :db do
   task :push do ; end
   task :pull do ; end
 end
+
+role :app, host
+role :web, host
+role :db,  host, :primary => true
