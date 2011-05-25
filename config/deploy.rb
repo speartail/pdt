@@ -4,10 +4,10 @@ load 'config/deploy/common'
 if Dir.exists?('../wp-admin')
   set :is_wp, true
   raise "You must create a symlink named default to the theme" unless File.exists?('../wp-content/themes/default')
-  load 'deploy/wordpress'
+  load 'config/wordpress'
 elsif Dir.exists?('../app')
   set :is_mag, true
-  load 'deploy/magento'
+  load 'config/magento'
 end
 load 'config/deploy/project' # place all overrides here
 require 'capistrano/ext/multistage'
