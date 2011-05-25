@@ -30,11 +30,24 @@ namespace :app do
   task :permissions do
     run "chmod -f 550 #{release_path}/pear"
     run "chmod -f 550 #{release_path}/mage"
+  end
+
+end
+
+namespace :cache do
+
+  desc 'Create directories'
+  task :setup do
     %w[ media var ].each do |d|
-      run "chmod -f 777 #{release_path}/#{d}"
+      run "mkdir -p #{shared_path}/data/#{d}"
+      run "chmod -f 777 #{shared_path}/data/#{d}"
     end
   end
 
+  desc 'Symlink directories'
+  task :symlink do
+    run "ln -nfs #{shared_path}/data/media #{release_path}/media"
+    run "ln -nfs #{shared_path}/data/var #{release_path}/var"
 end
 
 namespace :db do

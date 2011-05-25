@@ -36,7 +36,24 @@ EOF
   task "Set permissions"
   task :permissions do
     run "chmod -f 755 #{release_path}/timthumb.php"
-    run "chmod -f 777 #{release_path}/cache"
+  end
+
+end
+
+namespace :cache do
+
+  desc 'Create directories'
+  task :setup do
+    %w[ cache uploads ].each do |d|
+      run "mkdir -p #{shared_path}/data/#{d}"
+      run "chmod -f 777 #{shared_path}/data/#{d}"
+    end
+  end
+
+  desc 'Symlink directories'
+  task :symlink do
+    run "ln -nfs #{shared_path}/data/cache #{release_path}/wp-content/themes/default/cache"
+    run "ln -nfs #{shared_path}/data/uploads #{release_path}/wp-content/uploads"
   end
 
 end
