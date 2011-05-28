@@ -28,7 +28,7 @@ after  "db:restore", "db:config" # db:config is where we do DB contents replacem
 namespace :config do
   desc 'Create BASH environment'
   task :bash do
-    put %Q[umask 002\n PS1="\${debian_chroot:+($debian_chroot)}\\u@\\h:\w$ "], "/home/#{user}/.bash_profile"
+    put %Q[umask 002\n PS1="\${debian_chroot:+($debian_chroot)}\\u@\\h:\\w$ "], "/home/#{user}/.bash_profile"
   end
 end
 
