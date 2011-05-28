@@ -17,7 +17,7 @@ define('DB_COLLATE', '');
 #{generate_keys}
 
 $table_prefix = '#{db_prefix}';
-define('WPLANG', '#{wp_language}');
+define('WPLANG', '#{wp_lang}');
 define('WP_DEBUG', false);
 if ( !defined('ABSPATH') )
   define('ABSPATH', dirname(__FILE__).'/');
@@ -25,7 +25,7 @@ if ( !defined('ABSPATH') )
 require_once(ABSPATH . 'wp-settings.php');
 ?>
 EOF
-    put db_config.result, "#{shared_path}/wp-config.php"
+    put wp_config.result, "#{shared_path}/wp-config.php"
   end
 
   desc "Make configuration symlink"
@@ -33,7 +33,7 @@ EOF
     run "ln -nfs #{shared_path}/wp-config.php #{release_path}/wp-config.php"
   end
 
-  task "Set permissions"
+  desc "Set permissions"
   task :permissions do
     run "chmod -f 755 #{release_path}/timthumb.php"
   end
