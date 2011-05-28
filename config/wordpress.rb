@@ -1,7 +1,7 @@
 namespace :app do
 
   desc "Create wp-config.php"
-  task :config do
+  task :setup do
     wp_config = ERB.new <<-EOF
 <?php
 

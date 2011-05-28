@@ -1,7 +1,7 @@
 namespace :app do
 
   desc "Create initial Magento configuration"
-  task :config do
+  task :setup do
     run 'php -f #{shared_path}/install.php -- \
       --license_agreement_accepted "yes" \
       --locale "#{mag_locale}" \
