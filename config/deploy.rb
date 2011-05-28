@@ -3,7 +3,6 @@ require 'fileutils'
 set :stages, %w(dev preprod prod)
 set :default_stage, 'dev'
 require 'capistrano/ext/multistage'
-load 'config/common'
 if Dir.exists?('wp-admin')
   set :application, 'wordpress'
   raise "You must put the theme in a directory named 'default' or create a symlink named 'default' to the relevant directory." unless File.exists?('wp-content/themes/default')
@@ -14,11 +13,14 @@ elsif Dir.exists?('app')
 else
   raise 'Neither WordPress nor Magento were found. Aborting...'
 end
+puts "Found application: #{application}"
+load 'config/common' # must happen after the app specific loading due to :application
 load 'config/project' # place all overrides here
 
 set :copy_exclude, [ '.git' ]
 set :deploy_via, :remote_cache
 set :scm, :git
+set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
 
 before "deploy:setup", "config:bash", "cache:setup", "app:setup"

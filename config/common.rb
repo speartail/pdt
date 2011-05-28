@@ -12,9 +12,9 @@ set :mag_admin_password, 'super_shazza'
 set :wp_debug, false
 set :wp_lang, ''
 
-if :application == 'magento'
+if application == 'magento'
   set :repository,  "git@github.com:nwt/magento.git"
-elsif :application == 'wordpress'
+elsif application == 'wordpress'
   set :repository,  "git@github.com:nwt/wordpress.git"
 else
   raise "Ooops, looks like :repository is not set. Check out #{__FILE__}. Aborting..."
