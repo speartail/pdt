@@ -42,7 +42,7 @@ namespace :app do
 
     desc 'Download latest Wordpress version'
     task :download do
-      system "wget -c 'https://wordpress.org/latest.tar.gz'"
+      system "wget -c 'http://wordpress.org/latest.tar.gz'"
     end
 
   end
