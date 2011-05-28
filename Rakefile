@@ -36,4 +36,17 @@ namespace :clean do
 
 end
 
+namespace :app do
+
+  namespace :wordpress do
+
+    desc 'Download latest Wordpress version'
+    task :download do
+      system "wget -c 'https://wordpress.org/latest.tar.gz'"
+    end
+
+  end
+
+end
+
 task :default => 'clean:all'
