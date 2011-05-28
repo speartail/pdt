@@ -34,8 +34,17 @@ end
 
 # TODO create database dump/restore/push/pull
 namespace :db do
-  task :dump do ; end
-  task :restore do ; end
+
+  namespace :local do
+    task :dump do ; end
+    task :restore do ; end
+  end
+
+  namespace :remote do
+    task :dump do ; end
+    task :restore do ; end
+  end
+
   task :push do ; end
   task :pull do ; end
 end
