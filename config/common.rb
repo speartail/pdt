@@ -16,4 +16,6 @@ if :application == 'magento'
   set :repository,  "git@github.com:nwt/magento.git"
 elsif :application == 'wordpress'
   set :repository,  "git@github.com:nwt/wordpress.git"
+else
+  raise "Ooops, looks like :repository is not set. Check out #{__FILE__}. Aborting..."
 end
