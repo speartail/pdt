@@ -24,7 +24,7 @@ set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
 
 before "deploy:setup", "config:bash", "cache:setup", "app:setup"
-after  "deploy:update_code", "config:permissions", "cache:symlink", "app:symlink"
+after  "deploy:update_code", "app:permissions", "cache:symlink", "app:symlink"
 after  "db:restore", "db:config" # db:config is where we do DB contents replacements
 
 namespace :config do
