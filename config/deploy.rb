@@ -3,11 +3,11 @@ require 'fileutils'
 set :stages, %w(dev preprod prod)
 set :default_stage, 'dev'
 require 'capistrano/ext/multistage'
-if Dir.exists?('wp-admin')
+if Dir.exists?('public/wp-admin')
   set :application, 'wordpress'
-  raise "You must put the theme in a directory named 'default' or create a symlink named 'default' to the relevant directory." unless File.exists?('wp-content/themes/default')
+  raise "You must put the theme in a directory named 'default' or create a symlink named 'default' to the relevant directory." unless File.exists?('public/wp-content/themes/default')
   load 'config/wordpress'
-elsif Dir.exists?('app')
+elsif Dir.exists?('public/app')
   set :application, 'magento'
   load 'config/magento'
 else
@@ -28,9 +28,18 @@ after  "deploy:update_code", "app:permissions", "cache:symlink", "app:symlink"
 after  "db:restore", "db:config" # db:config is where we do DB contents replacements
 
 namespace :config do
+
   desc 'Create BASH environment'
   task :bash do
-    put %Q[umask 002\n PS1="\${debian_chroot:+($debian_chroot)}\\u@\\h:\\w$ "], "/home/#{user}/.bash_profile"
+    put %Q[umask 002\n PS1="\${debian_chroot:+($debian_chroot)}\\u@\\h:\\w$ "], File.join('home', user, '.bash_profile')
+  end
+  
+  desc 'Upload keys'
+  task :keys do
+    put File.join('keys', 'id_dsa_wordpress'), File.join('home', '.ssh', 'id_dsa') if application == 'wordpress'
+    put File.join('keys', 'id_dsa_magento'), File.join('home', '.ssh', 'id_dsa') if application == 'magento'
+    run "chmod 700 #{File.join('home', '.ssh')}"
+    run "chmod 600 #{File.join('home', '.ssh', 'id_dsa')}"
   end
 end
 

@@ -9,18 +9,18 @@ namespace :clean do
 
   desc "remove backup files"
   task :backup do
-    system "find . -name '*~' -delete"
+    system "find public -name '*~' -delete"
   end
 
   desc 'line endings to LF'
   task :eol do
-    SOURCE_FILES.each { |s| Dir.glob("**/*.{#{s}}").each { |f| system "fromdos #{f}" } }
+    SOURCE_FILES.each { |s| Dir.glob(["public/*", "public/**/*.{#{s}}"]).each { |f| system "fromdos #{f}" } }
   end
 
   desc 'permissions to 644'
   task :perms do
-    system "find . -type f -print0 | xargs -0 chmod 644"
-    system "find . -type d -print0 | xargs -0 chmod 755"
+    system "find public -type f -print0 | xargs -0 chmod 644"
+    system "find public -type d -print0 | xargs -0 chmod 755"
   end
 
   desc 'clean white space'
@@ -30,7 +30,7 @@ namespace :clean do
   
   desc 'create .gitignore to allow adding empty dirs'
   task :empty_dirs do
-    Dir.glob(["**","**/**"]).each { |f| FileUtils.touch(File.join(f, ".gitignore")) if File.directory?(f) }
+    Dir.glob(["public","**/**"]).each { |f| FileUtils.touch(File.join(f, ".gitignore")) if File.directory?(f) }
   end
 
 end
