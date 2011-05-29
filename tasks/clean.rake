@@ -14,7 +14,7 @@ namespace :clean do
 
   desc 'line endings to LF'
   task :eol do
-    SOURCE_FILES.each { |s| Dir.glob(["public/*", "public/**/*.{#{s}}"]).each { |f| system "fromdos #{f}" } }
+    SOURCE_FILES.each { |s| Dir.glob(["public/*.{#{s}}", "public/**/*.{#{s}}"]).each { |f| system "fromdos #{f}" } }
   end
 
   desc 'permissions to 644'
