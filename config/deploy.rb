@@ -52,15 +52,34 @@ namespace :db do
   end
 
   namespace :remote do
-    task :dump do
-      run %Q[mysqldump -h#{db_host} -u#{db_user} -p#{db_pass} #{db_name} | bzip2 > #{env['HOME']}/#{db_name}.sql.bz2]
+
+    desc 'Dump the remote database'
+    task :dump, :roles => [ :db ] do
+      run %Q[mysqldump -h#{db_host} -u#{db_user} -p#{db_pass} #{db_name} | bzip2 > /home/#{user}/#{db_name}.sql.bz2]
     end
 
-    task :restore do ; end
+    task :restore, :roles => [ :db ] do ; end
+
   end
 
-  task :push do ; end
-  task :pull do ; end
+  desc 'Download the remote database'
+  task :pull do
+    download "/home/#{user}/#{db_name}.sql.bz2", "#{db_name}.sql.bz2", :once => true
+  end
+
+  desc 'Upload the database'
+  task :push do
+    upload "#{db_name}.sql.bz2", "/home/#{user}/#{db_name}.sql.bz2", :once => true
+  end
+
+  desc 'Dump and download database in one go'
+  task :get do
+    transaction do
+      top.db.remote.dump
+      top.db.pull
+    end
+  end
+
 end
 
 role(:app) { host }
