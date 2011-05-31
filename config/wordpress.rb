@@ -39,7 +39,7 @@ EOF
 
   desc "Set permissions"
   task :permissions do
-    run "chmod -f 755 #{release_path}/timthumb.php"
+    run "chmod -f 755 #{File.join(release_path, 'scripts', 'timthumb.php'}"
   end
 
 end
