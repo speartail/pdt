@@ -58,7 +58,7 @@ namespace :cache do
 
   desc 'Symlink directories'
   task :symlink do
-    run "ln -nfs #{shared_path}/data/cache #{release_path}/public/wp-content/themes/default/cache"
+    run "ln -nfs #{shared_path}/data/cache #{release_path}/public/wp-content/themes/default/scripts/cache"
     run "ln -nfs #{shared_path}/data/uploads #{release_path}/public/wp-content/uploads"
   end
 
