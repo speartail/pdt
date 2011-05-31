@@ -30,16 +30,18 @@ require_once(ABSPATH . 'wp-settings.php');
 ?>
 EOF
     put wp_config.result, "#{shared_path}/wp-config.php"
+    run "rm -rf #{appdir}"
   end
 
   desc "Make configuration symlink"
   task :symlink do
-    run "ln -nfs #{shared_path}/wp-config.php #{release_path}/wp-config.php"
+    run "ln -nfs #{shared_path}/wp-config.php #{release_path}/public/wp-config.php"
+    run "ln -nfs #{release_path}/public #{appdir}"
   end
 
   desc "Set permissions"
   task :permissions do
-    run "chmod -f 755 #{File.join(release_path, 'scripts', 'timthumb.php'}"
+    run "chmod -f 755 #{File.join(release_path, 'public', 'wp-content', 'themes', 'default', 'scripts', 'timthumb.php')}"
   end
 
 end
@@ -56,8 +58,8 @@ namespace :cache do
 
   desc 'Symlink directories'
   task :symlink do
-    run "ln -nfs #{shared_path}/data/cache #{release_path}/wp-content/themes/default/cache"
-    run "ln -nfs #{shared_path}/data/uploads #{release_path}/wp-content/uploads"
+    run "ln -nfs #{shared_path}/data/cache #{release_path}/public/wp-content/themes/default/cache"
+    run "ln -nfs #{shared_path}/data/uploads #{release_path}/public/wp-content/uploads"
   end
 
 end
