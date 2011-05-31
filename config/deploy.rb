@@ -52,7 +52,10 @@ namespace :db do
   end
 
   namespace :remote do
-    task :dump do ; end
+    task :dump do
+      run %Q[mysqldump -h#{db_host} -u#{db_user} -p#{db_pass} #{db_name} | bzip2 > #{env['HOME']}/#{db_name}.sql.bz2]
+    end
+
     task :restore do ; end
   end
 
