@@ -1,6 +1,6 @@
 require 'capistrano/php'
 require 'fileutils'
-set :stages, %w(dev preprod prod)
+set :stages, %w(local dev preprod prod)
 set :default_stage, 'dev'
 require 'capistrano/ext/multistage'
 if Dir.exists?('public/wp-admin')
