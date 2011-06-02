@@ -17,3 +17,5 @@ A set of standard Capistrano/Rake tasks to use with WordPress and Magento projec
 
 ## TODO
 * add support for copying deploy keys to host
+* add tasks to download the deployed theme
+* add support for loading a 'seed.sql' file
