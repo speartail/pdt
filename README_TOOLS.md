@@ -8,3 +8,12 @@ A set of standard Capistrano/Rake tasks to use with WordPress and Magento projec
 
 ## Branches
 Need to add some details on common naming
+
+<table>
+<tr><th>Purpose</th><th>Prefix</th><th>Example</th></tr>
+<tr><td>Customer</td><td>c/</td><td>c/lpp</td></tr>
+<tr><td>Stock themes</td><td>t/</td><td>t/openhouse</td></tr>
+</table>
+
+## TODO
+* add support for copying deploy keys to host
