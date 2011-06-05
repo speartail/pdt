@@ -2,15 +2,10 @@ require 'fileutils'
 
 SOURCE_FILES=%w[php js css inc ini tpl]
 
-namespace :clean do
+namespace :tidy do
 
   desc "all cleanup jobs"
   task :all => [ :backup, :eol, :perms, :empty_dirs ]
-
-  desc "remove backup files"
-  task :backup do
-    system "find public -name '*~' -delete"
-  end
 
   desc 'line endings to LF'
   task :eol do
