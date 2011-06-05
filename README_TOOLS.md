@@ -20,3 +20,5 @@ A set of standard Capistrano/Rake tasks to use with WordPress and Magento projec
 * add tasks to download the deployed theme - needed for migrating old themes to this setup
 * add support for loading a 'seed.sql' file
 * add cron jobs for backing up uploads and db automatically + fetching?
+* create .my.cnf on server
+* tool to fetch new plugins

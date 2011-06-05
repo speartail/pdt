@@ -36,10 +36,9 @@ namespace :config do
   
   desc 'Upload keys'
   task :keys do
-    put File.join('keys', 'id_dsa_wordpress'), File.join('home', '.ssh', 'id_dsa') if application == 'wordpress'
-    put File.join('keys', 'id_dsa_magento'), File.join('home', '.ssh', 'id_dsa') if application == 'magento'
-    run "chmod 700 #{File.join('home', '.ssh')}"
-    run "chmod 600 #{File.join('home', '.ssh', 'id_dsa')}"
+    upload(File.join('keys', 'id_dsa'), File.join('/home', user, '.ssh', 'id_dsa')
+    run "chmod 700 #{File.join('/home', user, '.ssh')}"
+    run "chmod 600 #{File.join('/home', user, '.ssh', 'id_dsa')}"
   end
 end
 
