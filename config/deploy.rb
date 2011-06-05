@@ -36,7 +36,7 @@ namespace :config do
   
   desc 'Upload keys'
   task :keys do
-    upload(File.join('keys', 'id_dsa'), File.join('/home', user, '.ssh', 'id_dsa')
+    upload(File.join('keys', 'id_dsa'), File.join('/home', user, '.ssh', 'id_dsa'))
     run "chmod 700 #{File.join('/home', user, '.ssh')}"
     run "chmod 600 #{File.join('/home', user, '.ssh', 'id_dsa')}"
   end
