@@ -41,8 +41,8 @@ EOF
 
   desc "Set permissions"
   task :permissions do
-    timthumb=File.join(release_path, 'public', 'wp-content', 'themes', 'default', 'scripts', 'timthumb.php')
-    run("chmod -f 755 #{File.join(release_path, timthumb}") if File.exists?(timthumb)
+    timthumb=File.join('public', 'wp-content', 'themes', 'default', 'scripts', 'timthumb.php')
+    run("chmod -f 755 #{File.join(release_path, timthumb)}") if File.exists?(timthumb)
   end
 
 end
