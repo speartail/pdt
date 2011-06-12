@@ -57,14 +57,10 @@ namespace :cache do
     end
   end
 
-  desc 'Remove pushed cache directories if they exist'
-  task :remove do
-    run "rm -rf #{release_path}/public/wp-content/themes/default/scripts/cache"
-    run "rm -rf #{release_path}/public/wp-content/uploads"
-  end
-
   desc 'Symlink directories'
   task :symlink => 'cache:remove' do
+    run "rm -rf #{release_path}/public/wp-content/themes/default/scripts/cache"
+    run "rm -rf #{release_path}/public/wp-content/uploads"
     run "ln -nfs #{shared_path}/data/cache #{release_path}/public/wp-content/themes/default/scripts/cache"
     run "ln -nfs #{shared_path}/data/uploads #{release_path}/public/wp-content/uploads"
   end
