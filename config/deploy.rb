@@ -31,7 +31,13 @@ namespace :config do
 
   desc 'Create BASH environment'
   task :bash do
-    put %Q[umask 002\n PS1="\${debian_chroot:+($debian_chroot)}\\u@\\h:\\w$ "], File.join('/home', user, '.bash_profile')
+    put %q|
+umask 002
+PS1="\${debian_chroot:+($debian_chroot)}\\u@\\h:\\w$ "
+if [ -z "$STY" ]; then
+    exec screen -ARR
+fi
+    |, File.join('/home', user, '.bash_profile')
   end
   
   desc 'Upload keys'
