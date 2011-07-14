@@ -13,4 +13,9 @@ namespace :download do
     system "wget -c 'http://wordpress.org/#{WP_VERSION}.tar.gz'"
   end
 
+  desc 'Download latest timthumb version'
+  task :timthumb do
+    system "wget -c http://timthumb.googlecode.com/svn/trunk/timthumb.php"
+  end
+
 end
