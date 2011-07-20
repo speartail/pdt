@@ -11,7 +11,7 @@ elsif Dir.exists?('public/app')
   set :application, 'magento'
   load 'config/magento'
 else
-  raise 'Neither WordPress nor Magento were found. Aborting...'
+  raise 'Neither WordPress, Magento nor MODx were found. Aborting...'
 end
 puts "Found application: #{application}"
 load 'config/common' # must happen after the app specific loading due to :application
@@ -45,6 +45,17 @@ fi
     upload(File.join('keys', 'id_dsa'), File.join('/home', user, '.ssh', 'id_dsa'))
     run "chmod 700 #{File.join('/home', user, '.ssh')}"
     run "chmod 600 #{File.join('/home', user, '.ssh', 'id_dsa')}"
+  end
+
+  desc 'MySQL configuration'
+  task :mysql do
+    put %q|
+[client]
+host=#{db_host}
+user=#{db_user}
+password=#{db_pass}
+    |, File.join('/home', user, '.my.cnf')
+    run "chmod 600 #{File.join('/home', user, '.my.cnf')}"
   end
 end
 
