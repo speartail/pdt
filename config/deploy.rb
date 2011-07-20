@@ -49,7 +49,7 @@ fi
 
   desc 'MySQL configuration'
   task :mysql do
-    put %q|
+    put %Q|
 [client]
 host=#{db_host}
 user=#{db_user}
