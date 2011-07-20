@@ -71,7 +71,7 @@ namespace :db do
 
     desc 'Dump the remote database'
     task :dump, :roles => [ :db ] do
-      run %Q[mysqldump -h#{db_host} -u#{db_user} -p#{db_pass} #{db_name} | bzip2 > /home/#{user}/#{db_name}.sql.bz2]
+      run %Q[mysqldump -h#{db_host} -u#{db_user} #{db_name} | bzip2 > /home/#{user}/#{db_name}.sql.bz2]
     end
 
     task :restore, :roles => [ :db ] do ; end
