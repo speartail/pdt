@@ -14,7 +14,7 @@ namespace :package do
 
     desc 'tar theme'
     task :tar do
-      system "tar -cjf theme-#{suffix}.tgz #{theme}"
+      system "tar -cjf theme-#{suffix}.tar.bz2 #{theme}"
     end
 
   end
@@ -28,7 +28,7 @@ namespace :package do
 
     desc 'tar app'
     task :tar do
-      system "tar -cjf app-#{suffix}.tgz #{app}"
+      system "tar -cjf app-#{suffix}.tar.bz2 #{app}"
     end
 
   end
