@@ -63,12 +63,12 @@ namespace :app do
 
   desc 'Zip up the remote app'
   task :dump do
-    run %Q[tar -czhf /home/#{user}/#{project}_app.tgz #{appdir}]
+    run %Q[tar -cjhf /home/#{user}/#{project}_app.tar.bz2 #{appdir}]
   end
 
   desc 'Download the remotely dumped app'
   task :pull do
-    download "/home/#{user}/#{project}_app.tgz", "#{project}_app.tgz", :once => true
+    download "/home/#{user}/#{project}_app.tar.bz2", "#{project}_app.tar.bz2", :once => true
   end
 
 end
