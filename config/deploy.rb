@@ -59,7 +59,21 @@ password=#{db_pass}
   end
 end
 
-# TODO create database dump/restore/push/pull
+namespace :app do
+
+  desc 'Zip up the remote app'
+  task :dump do
+    run %Q[tar -czhf /home/#{user}/#{project}_app.tgz #{appdir}]
+  end
+
+  desc 'Download the remotely dumped app'
+  task :pull do
+    download "/home/#{user}/#{project}_app.tgz", "#{project}_app.tgz", :once => true
+  end
+
+end
+
+# TODO create database dump/restore
 namespace :db do
 
   namespace :local do
