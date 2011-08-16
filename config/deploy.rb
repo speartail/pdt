@@ -10,6 +10,9 @@ if Dir.exists?('public/wp-admin')
 elsif Dir.exists?('public/app')
   set :application, 'magento'
   load 'config/magento'
+elsif Dir.exists?('public/connectors')
+  set :application, 'modx'
+  load 'config/modx'
 else
   raise 'Neither WordPress, Magento nor MODx were found. Aborting...'
 end

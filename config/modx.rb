@@ -10,9 +10,18 @@ namespace :app do
   DateTime: #{Time.now}
 
 */
+/* define the MODX path constants necessary for core installation */
+define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/core/');
+define('MODX_CONFIG_KEY', 'config');
+
+/* define the connection variables */
+define('XPDO_DSN', 'mysql:host=#{db_host};dbname=#{db_name};charset=utf8');
+define('XPDO_DB_USER', '#{db_user}');
+define('XPDO_DB_PASS', '#{db_pass}');
+define('XPDO_TABLE_PREFIX', '#{db_prefix}');
 ?>
 EOF
-    put modx_config.result, "#{shared_path}/modx-config.php"
+    put modx_config.result, "#{shared_path}/build.config.php"
     run "rm -rf #{appdir}"
   end
 
