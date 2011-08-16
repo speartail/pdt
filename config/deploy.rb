@@ -81,16 +81,17 @@ namespace :db do
     task :restore do ; end
   end
 
-  namespace :remote do
-
-    desc 'Dump the remote database'
-    task :dump, :roles => [ :db ] do
-      run %Q[mysqldump -h#{db_host} -u#{db_user} #{db_name} | bzip2 > /home/#{user}/#{db_name}.sql.bz2]
-    end
-
-    task :restore, :roles => [ :db ] do ; end
-
+  desc 'Dump the remote database'
+  task :dump, :roles => [ :db ] do
+    run %Q[mysqldump -h#{db_host} -u#{db_user} #{db_name} > /home/#{user}/#{db_name}.sql]
   end
+
+  desc 'Compress the remote database'
+  task :compress, :roles => [ :db ] do
+    run %Q[bzip2 /home/#{user}/#{db_name}.sql]
+  end
+
+  task :restore, :roles => [ :db ] do ; end
 
   desc 'Download the remote database'
   task :pull do
@@ -102,10 +103,19 @@ namespace :db do
     upload "#{db_name}.sql.bz2", "/home/#{user}/#{db_name}.sql.bz2", :once => true
   end
 
+  desc 'Change domain in extract'
+  task :change_domain do
+    run %Q[sed -i 's/#{dev_domain}/#{domain}/g' /home/#{user}/#{db_name}.sql]
+  end
+
+  desc 'Publish dump file in public folder'
+  task :publish do ; end
+
   desc 'Dump and download database in one go'
   task :get do
     transaction do
-      top.db.remote.dump
+      top.db.dump
+      top.db.compress
       top.db.pull
     end
   end
