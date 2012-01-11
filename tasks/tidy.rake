@@ -1,6 +1,6 @@
 require 'fileutils'
 
-SOURCE_FILES=%w[php js css inc ini tpl]
+SOURCE_FILES=%w[ css inc ini html js php phtml tpl xml ]
 
 namespace :tidy do
 
