@@ -17,6 +17,22 @@ namespace :git do
     system 'git repack -d -a --window=50 --depth=50 -f'
   end
 
-  task :all => [ 'git:check', 'git:prune', 'git:repack' ]
+  desc 'Update submodules'
+  task :submodules do
+    system 'git submodule update --init --recursive'
+  end
+
+  desc 'Pull'
+  task :pull do
+    system 'git pull'
+  end
+
+  desc 'Push'
+  task :push do
+    system 'git push'
+  end
+
+  task :all => [ :check, :prune, :repack, :pull, :submodules, :push ]
+  # task :all => [ 'git:check', 'git:prune', 'git:repack' ]
 
 end
