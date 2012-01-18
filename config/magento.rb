@@ -48,6 +48,8 @@ namespace :cache do
   task :symlink do
     run "ln -nfs #{shared_path}/data/media #{release_path}/media"
     run "ln -nfs #{shared_path}/data/var #{release_path}/var"
+  end
+
 end
 
 namespace :db do
