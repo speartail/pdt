@@ -26,6 +26,8 @@ set :scm, :git
 set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
 
+ssh_options[:forward_agent] = true
+
 before "deploy:setup", "config:bash", "config:keys", "cache:setup", "app:setup"
 after  "deploy:update_code", "app:permissions", "cache:symlink", "app:symlink"
 after  "db:restore", "db:config" # db:config is where we do DB contents replacements
