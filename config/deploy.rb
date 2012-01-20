@@ -26,6 +26,9 @@ set :scm, :git
 set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
 
+# this is critical as first deploy will otherwise fail with a 'Host key verification failed'
+default_run_options[:pty] = true
+# also allow ForwardAgent in $HOME/.ssh/config
 ssh_options[:forward_agent] = true
 
 before "deploy:setup", "config:bash", "config:keys", "cache:setup", "app:setup"
