@@ -1,7 +1,7 @@
 namespace :app do
 
-  desc "Create initial Magento configuration"
-  task :setup do
+  desc 'Create initial Magento configuration by running installer'
+  task :setup_via_installer do
     run "php -f #{shared_path}/install.php -- \
       --license_agreement_accepted 'yes' \
       --locale '#{mag_locale}' \
@@ -23,13 +23,20 @@ namespace :app do
       --admin_password '#{mag_admin_password}'"
   end
 
+  desc 'Create initial configuration directly'
+  task :setup do
+  end
+
   desc "Make configuration symlink"
-  task :symlink do ; end
+  task :symlink do
+    run "ln -nfs #{release_path}/public #{appdir}"
+  end
 
   desc "Set permissions"
   task :permissions do
-    run "chmod -f 550 #{release_path}/pear"
-    run "chmod -f 550 #{release_path}/mage"
+    %w[ mage pear ].each do |d|
+      run "test -d #{release_path}/#{d} && chmod -f 550 #{release_path}/#{d} || echo 'Directory #{d} not present yet...'"
+    end
   end
 
 end
