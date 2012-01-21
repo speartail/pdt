@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'app'
+gem 'builder'
 gem 'capistrano'
 gem 'capistrano-ext'
 gem 'capistrano-php'
