@@ -3,6 +3,7 @@ require 'fileutils'
 set :stages, %w(local dev preprod prod)
 set :default_stage, 'dev'
 require 'capistrano/ext/multistage'
+
 if Dir.exists?('public/wp-admin')
   set :application, 'wordpress'
   raise "You must put the theme in a directory named 'default' or create a symlink named 'default' to the relevant directory." unless File.exists?('public/wp-content/themes/default')
@@ -31,9 +32,10 @@ default_run_options[:pty] = true
 # also allow ForwardAgent in $HOME/.ssh/config
 ssh_options[:forward_agent] = true
 
-before "deploy:setup", "config:bash", "config:keys", "cache:setup", "app:setup"
-after  "deploy:update_code", "app:permissions", "cache:symlink", "app:symlink"
-after  "db:restore", "db:config" # db:config is where we do DB contents replacements
+before 'app:setup', 'app:prepare'
+before 'deploy:setup', 'config:bash', 'config:keys', 'cache:setup', 'app:setup'
+after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'app:symlink'
+after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
 
 namespace :config do
 
@@ -69,6 +71,11 @@ end
 
 namespace :app do
 
+  desc 'Prepare for deployment'
+  task :prepare do
+    run "rm -rf #{appdir}"
+  end
+
   desc 'Zip up the remote app'
   task :dump do
     run %Q[tar -cjhf /home/#{user}/#{project}_app.tar.bz2 #{appdir}]
@@ -80,6 +87,7 @@ namespace :app do
   end
 
 end
+
 
 # TODO create database dump/restore
 namespace :db do
