@@ -30,7 +30,6 @@ require_once(ABSPATH . 'wp-settings.php');
 ?>
 EOF
     put wp_config.result, "#{shared_path}/wp-config.php"
-    run "rm -rf #{appdir}"
   end
 
   desc "Make configuration symlink"
