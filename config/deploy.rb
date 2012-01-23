@@ -49,8 +49,13 @@ if [ -z "$STY" ]; then
 fi
     |, File.join('/home', user, '.bash_profile')
   end
+
+  desc 'Configure tmux'
+  task :tmux do
+    upload('~/.tmux.conf', '~/.tmux.conf') if File.exist('~/.tmux.conf')
+  end
   
-  desc 'Upload keys'
+  desc 'Upload keys - DEPRECATED - use ForwardAgent instead'
   task :keys do
     upload(File.join('keys', 'id_dsa'), File.join('/home', user, '.ssh', 'id_dsa'))
     run "chmod 700 #{File.join('/home', user, '.ssh')}"
@@ -67,6 +72,8 @@ password=#{db_pass}
     |, File.join('/home', user, '.my.cnf')
     run "chmod 600 #{File.join('/home', user, '.my.cnf')}"
   end
+
+  task :all => [ :bash, :tmux, :mysql ]
 end
 
 namespace :app do
@@ -87,7 +94,6 @@ namespace :app do
   end
 
 end
-
 
 # TODO create database dump/restore
 namespace :db do
@@ -141,3 +147,7 @@ end
 role(:app) { host }
 role(:web) { host }
 role(:db, :primary => true) { host }
+
+def remote_file_exists?(full_path)
+  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
+end

@@ -57,6 +57,13 @@ namespace :cache do
     run "ln -nfs #{shared_path}/data/var #{release_path}/var"
   end
 
+  desc 'Clear cache'
+  task :clear do
+    %w[ cache session ].each do |f|
+      run "rm -rf #{current_path}/var/#{d}/*"
+    end
+  end
+
 end
 
 namespace :db do

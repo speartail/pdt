@@ -64,6 +64,9 @@ namespace :cache do
     run "ln -nfs #{shared_path}/data/uploads #{release_path}/public/wp-content/uploads"
   end
 
+  # I don't know if we need to clear the cache directory on WordPress
+  task :clear do ; end
+
 end
 
 namespace :db do
