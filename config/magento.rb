@@ -39,6 +39,32 @@ namespace :app do
     end
   end
 
+  namespace :errors do
+
+    # <config>
+    # <skin>default</skin>
+    # <report>
+    #     <action>email</action>
+    #     <subject>Magento Commerce Error Report. Store Debug Information</subject>
+    #     <email_address>webmaster@yourdomain.com</email_address>
+    #     <trash>leave</trash>
+    # </report>
+    # </config>
+    #
+    def generate_error_config(enable = false)
+      xml = Builder::new
+    end
+
+    desc 'Enable error reporting via email'
+    task :email do
+    end
+
+    desc 'Disable error reporting'
+    task :disable do
+    end
+
+  end
+
 end
 
 namespace :cache do
