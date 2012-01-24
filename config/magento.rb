@@ -79,8 +79,7 @@ namespace :cache do
 
   desc 'Symlink directories'
   task :symlink do
-    run "ln -nfs #{shared_path}/data/media #{release_path}/media"
-    run "ln -nfs #{shared_path}/data/var #{release_path}/var"
+    %w[ media var ].each { |d| run "ln -nfs #{shared_path}/data/media #{release_path}/public/media" }
   end
 
   desc 'Clear cache'
