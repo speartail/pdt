@@ -52,7 +52,7 @@ fi
 
   desc 'Configure tmux'
   task :tmux do
-    upload('~/.tmux.conf', '~/.tmux.conf') if File.exist('~/.tmux.conf')
+    upload('~/.tmux.conf', '~/.tmux.conf') if File.exists?('~/.tmux.conf')
   end
   
   desc 'Upload keys - DEPRECATED - use ForwardAgent instead'
