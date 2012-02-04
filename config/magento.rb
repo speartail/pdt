@@ -30,6 +30,8 @@ namespace :app do
   desc "Make configuration symlink"
   task :symlink do
     run "ln -nfs #{release_path}/public #{appdir}"
+    run "ln -nfs #{shared_path}/app/etc/local.xml #{release_path}/public/app/etc/local.xml"
+    run "ln -nfs #{shared_path}/errors/local.xml #{release_path}/public/errors/local.xml"
   end
 
   desc "Set permissions"
@@ -42,16 +44,22 @@ namespace :app do
   namespace :errors do
 
     # <config>
-    # <skin>default</skin>
-    # <report>
-    #     <action>email</action>
-    #     <subject>Magento Commerce Error Report. Store Debug Information</subject>
-    #     <email_address>webmaster@yourdomain.com</email_address>
-    #     <trash>leave</trash>
-    # </report>
+    #     <skin>default</skin>
+    #     <report>
+    #         <!-- print or email -->
+    #         <action>print</action>
+    #         <subject>Bellus Store Debug Information</subject>
+    #         <email_address>peter@speartail.com</email_address>
+    #         <!-- "trash" is handle about trace info
+    #              "leave" is for store on disk
+    #              "delete" is for cleaning -->
+    #         <trash>leave</trash>
+    #     </report>
     # </config>
-    #
-    def generate_error_config(enable = false)
+
+    # :print or :email
+    # anything else disables
+    def generate_error_config(type = :print)
       xml = Builder::new
     end
 
