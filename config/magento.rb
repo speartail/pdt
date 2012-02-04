@@ -37,7 +37,8 @@ namespace :app do
   desc "Set permissions"
   task :permissions do
     %w[ mage pear ].each do |f|
-      run "test -f #{release_path}/#{f} && chmod -f 550 #{release_path}/#{f} || echo 'File #{f} not present yet...'"
+      file="#{release_path}/public/#{f}"
+      run "chmod -f 550 #{file}" if remote_file_exists? file
     end
   end
 
