@@ -73,7 +73,7 @@ namespace :app do
     end
 
     desc 'Enable error reporting online'
-    task :print do
+    task :online do
     end
 
     desc 'Disable error reporting'
