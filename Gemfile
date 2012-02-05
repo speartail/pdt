@@ -11,6 +11,7 @@ gem 'guard'
 gem 'guard-bundler'
 gem 'guard-compass'
 gem 'guard-sprockets'
+gem 'libnotify' # for guard
 gem 'rake'
-gem 'rb-inotify'
+gem 'rb-inotify' # for guard
 gem 'w3c_validators'
