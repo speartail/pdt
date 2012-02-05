@@ -6,6 +6,7 @@ gem 'capistrano'
 gem 'capistrano-ext'
 gem 'capistrano-php'
 gem 'capistrano-spec'
+gem 'compass'
 gem 'execjs' # for sprockets and coffee
 gem 'foreman'
 gem 'guard'
