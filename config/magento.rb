@@ -102,8 +102,8 @@ namespace :cache do
 
   desc 'Clear cache'
   task :clear do
-    %w[ cache session ].each do |f|
-      run "rm -rf #{current_path}/var/#{d}/*"
+    %w[ cache session ].each do |d|
+      puts "rm -rf #{shared_path}/data/var/#{d}/*"
     end
   end
 
