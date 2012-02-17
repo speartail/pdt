@@ -1,2 +1,0 @@
-rvm --create use 1.9.2@pdt > /dev/null
-export PATH="./bin:$PATH"

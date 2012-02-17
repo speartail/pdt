@@ -30,7 +30,6 @@ require_once(ABSPATH . 'wp-settings.php');
 ?>
 EOF
     put wp_config.result, "#{shared_path}/wp-config.php"
-    run "rm -rf #{appdir}"
   end
 
   desc "Make configuration symlink"
@@ -64,6 +63,9 @@ namespace :cache do
     run "ln -nfs #{shared_path}/data/cache #{release_path}/public/wp-content/themes/default/scripts/cache"
     run "ln -nfs #{shared_path}/data/uploads #{release_path}/public/wp-content/uploads"
   end
+
+  # I don't know if we need to clear the cache directory on WordPress
+  task :clear do ; end
 
 end
 

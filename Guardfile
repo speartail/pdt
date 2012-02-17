@@ -3,5 +3,5 @@ guard 'bundler' do
 end
 
 guard 'compass' do
-  watch('^public/(.*)\.s[ac]ss')
+  watch(/^public\/(.*)\.s[ac]ss/)
 end

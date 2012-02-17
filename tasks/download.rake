@@ -1,4 +1,4 @@
-MAGENTO_VERSION="1.5.1.0"
+MAGENTO_VERSION="1.6.1.0"
 WP_VERSION="latest"
 
 namespace :download do

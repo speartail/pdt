@@ -3,6 +3,7 @@ require 'fileutils'
 set :stages, %w(local dev preprod prod)
 set :default_stage, 'dev'
 require 'capistrano/ext/multistage'
+
 if Dir.exists?('public/wp-admin')
   set :application, 'wordpress'
   raise "You must put the theme in a directory named 'default' or create a symlink named 'default' to the relevant directory." unless File.exists?('public/wp-content/themes/default')
@@ -26,9 +27,15 @@ set :scm, :git
 set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
 
-before "deploy:setup", "config:bash", "config:keys", "cache:setup", "app:setup"
-after  "deploy:update_code", "app:permissions", "cache:symlink", "app:symlink"
-after  "db:restore", "db:config" # db:config is where we do DB contents replacements
+# this is critical as first deploy will otherwise fail with a 'Host key verification failed'
+default_run_options[:pty] = true
+# also allow ForwardAgent in $HOME/.ssh/config
+ssh_options[:forward_agent] = true
+
+before 'app:setup', 'app:prepare'
+before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup', 'app:setup'
+after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'app:symlink'
+after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
 
 namespace :config do
 
@@ -42,8 +49,13 @@ if [ -z "$STY" ]; then
 fi
     |, File.join('/home', user, '.bash_profile')
   end
+
+  desc 'Configure tmux'
+  task :tmux do
+    upload('~/.tmux.conf', '~/.tmux.conf') if File.exists?('~/.tmux.conf')
+  end
   
-  desc 'Upload keys'
+  desc 'Upload keys - DEPRECATED - use ForwardAgent instead'
   task :keys do
     upload(File.join('keys', 'id_dsa'), File.join('/home', user, '.ssh', 'id_dsa'))
     run "chmod 700 #{File.join('/home', user, '.ssh')}"
@@ -60,9 +72,15 @@ password=#{db_pass}
     |, File.join('/home', user, '.my.cnf')
     run "chmod 600 #{File.join('/home', user, '.my.cnf')}"
   end
+
 end
 
 namespace :app do
+
+  desc 'Prepare for deployment'
+  task :prepare do
+    run "rm -rf #{appdir}"
+  end
 
   desc 'Zip up the remote app'
   task :dump do
@@ -128,3 +146,7 @@ end
 role(:app) { host }
 role(:web) { host }
 role(:db, :primary => true) { host }
+
+def remote_file_exists?(full_path)
+  'true' ==  capture("if [ -e #{full_path} ]; then echo 'true'; fi").strip
+end
