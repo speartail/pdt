@@ -12,6 +12,7 @@ gem 'foreman'
 gem 'guard'
 gem 'guard-bundler'
 gem 'guard-compass'
+gem 'guard-sass'
 gem 'guard-sprockets'
 gem 'libnotify' # for guard
 gem 'rake'
