@@ -8,6 +8,7 @@ gem 'capistrano-php'
 gem 'capistrano-spec'
 gem 'compass'
 gem 'execjs' # for sprockets and coffee
+gem 'favicon_maker'
 gem 'foreman'
 gem 'guard'
 gem 'guard-bundler'
