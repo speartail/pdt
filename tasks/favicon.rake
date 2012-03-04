@@ -3,7 +3,7 @@ require 'favicon_maker'
 namespace :favicon do
 
   desc 'Generate favicons'
-  task :generate
+  task :generate do
     options = {
       :root_dir => '.',
       :input_dir => File.join('public', 'images'),
