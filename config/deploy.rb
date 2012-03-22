@@ -45,6 +45,7 @@ namespace :config do
 umask 002
 PS1="\${debian_chroot:+($debian_chroot)}\\u@\\h:\\w$ "
 if [ -z "$STY" ]; then
+    # exec tmux attach
     exec screen -ARR
 fi
     |, File.join('/home', user, '.bash_profile')
