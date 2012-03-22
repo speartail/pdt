@@ -25,3 +25,7 @@ gem 'guard-sass'
 gem 'guard-sprockets'
 gem 'libnotify'         # for guard
 gem 'rb-inotify'        # for guard
+
+# php support
+gem 'rack-legacy'
+gem 'thin'
