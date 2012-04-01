@@ -6,7 +6,7 @@ http_path = "/"
 @base = 'public'
 if Dir.exists? File.join(@base, 'skin')
   # magento
-  @base = File.join @base, 'skin', 'frontend', 'default'
+  @base = File.join @base, 'skin', 'frontend', 'default', 'default'
 elsif Dir.exists? File.join(@base, 'wp-content')
   # wordpress
   @base = File.join @base, 'wp-content', 'themes', 'default'
@@ -18,13 +18,15 @@ else
 end
 
 found_css = false
+css = File.join @base, 'css'
 [ 'css', 'CSS', 'stylesheets' ].each do |d|
   dir = File.join @base, d
   if Dir.exists?(dir) && !found_css
     found_css = true
-    css_dir = dir
+    css = dir
   end
 end
+css_dir = css
 sass_dir = File.join @base, 'sass'
 images_dir = File.join @base, 'images'
 javascripts_dir = File.join @base, 'javascripts'
