@@ -3,5 +3,6 @@ guard 'bundler', :notify => false do
 end
 
 guard 'compass', :configuration_file => 'config/compass.rb' do
+  watch 'config/compass.rb'
   watch(/^public\/(.*)\.s[ac]ss/)
 end
