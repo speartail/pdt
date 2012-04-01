@@ -1,4 +1,4 @@
-guard 'bundler' do
+guard 'bundler', :notify => false do
   watch('Gemfile')
 end
 
