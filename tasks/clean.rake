@@ -1,4 +1,4 @@
-IGNORES = [ '*~', '.sass-cache' ]
+JUNK_FILES = [ '**/*~', '**/.sass-cache', '**/.DS_Store' ]
 
-CLEAN.include IGNORES
-CLOBBER.include IGNORES
+CLEAN.include JUNK_FILES
+CLOBBER.include JUNK_FILES
