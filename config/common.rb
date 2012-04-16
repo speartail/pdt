@@ -18,6 +18,10 @@ set :mag_admin_email, EMAIL
 set :wp_debug, false
 set :wp_lang, ''
 
-set(:repository, "git@github.com:speartail/#{application}.git") if [ 'magento', 'wordpress' ].include?(application)
+if config.repos
+  set :repository, config.repos
+else
+  set(:repository, "git@github.com:speartail/#{application}.git") if [ 'magento', 'wordpress' ].include?(application)
+end
 
 puts "Set initial password: #{PASSWORD}"
