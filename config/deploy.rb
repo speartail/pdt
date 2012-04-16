@@ -55,7 +55,7 @@ fi
   task :tmux do
     upload('~/.tmux.conf', '~/.tmux.conf') if File.exists?('~/.tmux.conf')
   end
-  
+
   desc 'Upload keys - DEPRECATED - use ForwardAgent instead'
   task :keys do
     upload(File.join('keys', 'id_dsa'), File.join('/home', user, '.ssh', 'id_dsa'))
@@ -131,7 +131,9 @@ namespace :db do
   end
 
   desc 'Publish dump file in public folder'
-  task :publish do ; end
+  task :publish do
+    raise NotImplementedError, 'TODO - add support for publishing dump for http download'
+  end
 
   desc 'Dump and download database in one go'
   task :get do
