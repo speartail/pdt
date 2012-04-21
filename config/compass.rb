@@ -1,4 +1,9 @@
 # Require any additional compass plugins here.
+#
+# Other requires
+require './config/app_config'
+
+@app_config = AppConfig.new
 
 # Set this to the root of your project when deployed:
 http_path = "/"
@@ -6,13 +11,13 @@ http_path = "/"
 @base = 'public'
 if Dir.exists? File.join(@base, 'skin')
   # magento
-  @base = File.join @base, 'skin', 'frontend', 'default', 'default'
+  @base = File.join @base, 'skin', 'frontend', 'default', @app_config.config.theme_dir
 elsif Dir.exists? File.join(@base, 'wp-content')
   # wordpress
-  @base = File.join @base, 'wp-content', 'themes', 'default'
+  @base = File.join @base, 'wp-content', 'themes', @app_config.config.theme_dir
 elsif Dir.exists? File.join(@base, 'some_random_modx_path')
   # modx
-  @base = File.join @base, 'gibblygob'
+  @base = File.join @base, 'gibblygob', @app_config.config.theme_dir
 else
   puts 'Unable to find project'
 end

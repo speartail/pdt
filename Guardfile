@@ -1,3 +1,5 @@
+# require './config/app_config'
+
 guard 'bundler', :notify => false do
   watch('Gemfile')
 end
