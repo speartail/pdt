@@ -21,7 +21,7 @@ set :mag_admin_email, EMAIL
 set :wp_debug, false
 set :wp_lang, ''
 
-if @app_config
+if @app_config && @app_config.repos
   set :repository, @app_config.config.repos
 else
   set(:repository, "git@github.com:speartail/#{application}.git") if [ 'magento', 'wordpress' ].include?(application)
