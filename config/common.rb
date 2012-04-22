@@ -26,5 +26,3 @@ if @app_config && @app_config.config && @app_config.config.repos
 else
   set(:repository, "git@github.com:speartail/#{application}.git") if [ 'magento', 'wordpress' ].include?(application)
 end
-
-puts "Set initial password: #{PASSWORD}"
