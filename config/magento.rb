@@ -148,3 +148,13 @@ namespace :db do
   end
 
 end
+
+namespace :user do
+
+  namespace :admin do
+    desc "Reset admin password to 'password'"
+    task :reset do
+      run %Q[#{mysql} -e "UPDATE admin_user SET password=CONCAT(MD5('HelloHellopassword'), ':HelloHello') WHERE username = 'admin';"]
+    end
+  end
+end
