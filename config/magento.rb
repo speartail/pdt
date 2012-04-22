@@ -2,7 +2,6 @@ namespace :app do
 
   desc 'Create initial Magento configuration by running installer'
   task :setup_via_installer do
-
     run "rm #{current_path}/public/app/etc/local.xml ; php -f #{current_path}/public/install.php -- \
       --license_agreement_accepted 'yes' \
       --locale '#{mag_locale}' \
@@ -22,10 +21,12 @@ namespace :app do
       --admin_email '#{mag_admin_email}' \
       --admin_username '#{mag_admin_username}' \
       --admin_password '#{mag_admin_password}'"
+    run "cp #{current_path}/public/app/etc/local.xml #{shared_path}/app/etc"
   end
 
   desc 'Create initial configuration directly'
   task :setup do
+    setup_via_installer
   end
 
   desc "Make configuration symlink"
@@ -33,6 +34,7 @@ namespace :app do
     run "ln -nfs #{release_path}/public #{appdir}"
     run "ln -nfs #{shared_path}/app/etc/local.xml #{release_path}/public/app/etc/local.xml"
     run "ln -nfs #{shared_path}/errors/local.xml #{release_path}/public/errors/local.xml"
+    run "ln -nfs #{release_path}/public/lib/Zend/Locale/Data/en_US.xml #{release_path}/public/lib/Zend/Locale/Data/en_us.xml"
   end
 
   desc "Set permissions needed for install"
