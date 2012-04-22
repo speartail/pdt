@@ -1,24 +1,50 @@
 server {
   listen   80;
 
-  root /home/local/src/biz/magento/public;
-  index index.php index.html index.htm;
+  root /srv/www/local/localhost;
+  index index.html index.php;
 
   server_name localhost;
 
   location / {
-    try_files $uri $uri/ /index.html;
+    try_files $uri $uri/ @handler;
     autoindex on;
   }
 
-  location ~ \.php$ {
-    fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    #	NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-    #	With php5-cgi alone:
-    #	fastcgi_pass 127.0.0.1:9000;
-    #	With php5-fpm:
-    fastcgi_pass unix:/var/run/php5-fpm.sock;
-    fastcgi_index index.php;
-    include fastcgi_params;
+  location /app/                { deny all; }
+  location /includes/           { deny all; }
+  location /lib/                { deny all; }
+  location /media/downloadable/ { deny all; }
+  location /pkginfo/            { deny all; }
+  location /report/config.xml   { deny all; }
+  location /var/                { deny all; }
+
+  location @handler {
+    rewrite / /index.php;
   }
+
+  location ~ .php/ { ## Forward paths like /js/index.php/x.js to relevant handler
+    rewrite ^(.*.php)/ $1 last;
+  }
+
+  location ~ \.php$ {
+    # fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    #	NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+    # fastcgi_pass 127.0.0.1:9000;
+    # fastcgi_pass unix:/var/run/php5-fpm.sock;
+    # fastcgi_index index.php;
+    # include fastcgi_params;
+
+    if (!-e $request_filename) { rewrite / /index.php last; } ## Catch 404s that try_files miss
+
+    expires        off; ## Do not cache dynamic content
+    fastcgi_pass   127.0.0.1:9000;
+    # fastcgi_param  HTTPS $fastcgi_https;
+    fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+    fastcgi_param  MAGE_RUN_CODE default; ## Store code is defined in administration > Configuration > Manage Stores
+    fastcgi_param  MAGE_RUN_TYPE store;
+    include        fastcgi_params; ## See /etc/nginx/fastcgi_params
+
+  }
+
 }
