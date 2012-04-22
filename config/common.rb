@@ -21,6 +21,8 @@ set :mag_admin_email, EMAIL
 set :wp_debug, false
 set :wp_lang, ''
 
+set :mysql, "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
+
 if @app_config && @app_config.config && @app_config.config.repos
   set :repository, @app_config.config.repos
 else
