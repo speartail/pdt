@@ -2,6 +2,7 @@ namespace :app do
 
   desc 'Create initial Magento configuration by running installer'
   task :setup_via_installer do
+    PASSWORD = SecureRandom.hex(5)
     run "rm -f #{current_path}/public/app/etc/local.xml"
     run "php -f #{current_path}/public/install.php -- \
       --license_agreement_accepted 'yes' \
@@ -21,10 +22,11 @@ namespace :app do
       --admin_lastname '#{mag_admin_lastname}' \
       --admin_email '#{mag_admin_email}' \
       --admin_username '#{mag_admin_username}' \
-      --admin_password '#{mag_admin_password}'"
+      --admin_password '#{PASSWORD}'"
     run "mkdir -p #{shared_path}/app/etc"
     run "mkdir -p #{shared_path}/errors"
     run "cp #{current_path}/public/app/etc/local.xml #{shared_path}/app/etc"
+    puts "Set initial password: #{PASSWORD}"
   end
 
   desc 'Create initial configuration directly'
