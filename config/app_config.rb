@@ -28,6 +28,10 @@ class AppConfig
     @logger.level = @old_level if @old_level
   end
 
+  def to_s
+    @config.to_s
+  end
+
   private
   def hashes2ostruct(object)
     return case object
