@@ -131,7 +131,8 @@ namespace :content do
   desc 'Seed CMS pages'
   task :seed do
     Dir.glob(File.join(Dir.pwd, 'pages/*')).each do |p|
-      run %Q[#{mysql} -e "LOAD DATA INFILE '#{current_path}/pages/#{p}' INTO TABLE cms_page (content);"]
+      page = File.basename p
+      run %Q[#{mysql} -e "LOAD DATA INFILE '#{current_path}/pages/#{page}' INTO TABLE cms_page (content);"]
     end
   end
 end
