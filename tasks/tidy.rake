@@ -1,11 +1,11 @@
 require 'fileutils'
 
-SOURCE_FILES=%w[ css inc ini html js php phtml tpl xml ]
+SOURCE_FILES=%w[ css inc ini html js php phtml scss tpl xml ]
 
 namespace :tidy do
 
   desc "all cleanup jobs"
-  task :all => [ :backup, :eol, :perms, :empty_dirs ]
+  task :all => [ :eol, :perms, :empty_dirs ]
 
   desc 'line endings to LF'
   task :eol do
