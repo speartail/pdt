@@ -98,9 +98,17 @@ end
 # TODO create database dump/restore
 namespace :db do
 
+  MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
+
   namespace :local do
     task :dump do ; end
     task :restore do ; end
+  end
+
+  desc "Seed the data stored in 'db/seed.sql'"
+  task :seed do
+    file="#{current_path}/db/seed.sql"
+    run "#{MYSQL} < #{file}" if remote_file_exists?(file)
   end
 
   desc 'Dump the remote database'

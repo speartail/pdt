@@ -132,7 +132,14 @@ end
 
 namespace :db do
 
+  MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
+
   desc "Change configuration stored in DB"
-  task :config do ; end
+  task :config do
+    %w[ secure unsecure ].each do |s|
+      sql = "update core_config_data set value = 'http://#{domain}/' where path = 'web/#{s}/base_url';"
+      run "echo '#{sql}' | #{MYSQL}"
+    end
+  end
 
 end

@@ -78,13 +78,16 @@ namespace :cache do
 end
 
 namespace :db do
+
+  MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
+
   desc "Change configuration stored in DB"
   task :config do
     %w[home siteurl].each do |k|
-      run %Q[mysql -h#{db_host} -u#{db_user} #{db_name} -e "UPDATE #{db_prefix}options SET option_value = 'http://#{host}' WHERE option_name = '#{k}'"]
+      run %Q[#{MYSQL} -e "UPDATE #{db_prefix}options SET option_value = 'http://#{host}' WHERE option_name = '#{k}'"]
     end
     %w[template stylesheet].each do |k|
-      run %Q[mysql -h#{db_host} -u#{db_user} #{db_name} -e "UPDATE #{db_prefix}options SET option_value = 'default' WHERE option_name = '#{k}'"]
+      run %Q[#{MYSQL} -e "UPDATE #{db_prefix}options SET option_value = 'default' WHERE option_name = '#{k}'"]
     end
   end
 end
