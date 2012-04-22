@@ -1,11 +1,12 @@
 source 'http://rubygems.org'
 
-gem 'app'
 gem 'builder'
 gem 'capistrano'
+gem 'capistrano_colors'
 gem 'capistrano-ext'
 gem 'capistrano-php'
 gem 'capistrano-spec'
+gem 'capistrano-uptodate'
 gem 'favicon_maker'
 gem 'foreman'
 gem 'rake'
