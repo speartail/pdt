@@ -21,6 +21,8 @@ namespace :app do
       --admin_email '#{mag_admin_email}' \
       --admin_username '#{mag_admin_username}' \
       --admin_password '#{mag_admin_password}'"
+    run "mkdir -p #{shared_path}/app/etc"
+    run "mkdir -p #{shared_path}/errors"
     run "cp #{current_path}/public/app/etc/local.xml #{shared_path}/app/etc"
   end
 
