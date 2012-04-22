@@ -21,6 +21,8 @@ puts "Found application: #{application}"
 load 'config/common' # must happen after the app specific loading due to :application
 load 'config/project' # place all overrides here
 
+set :mysql, "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
+
 set :copy_exclude, [ '.git' ]
 set :deploy_via, :remote_cache
 set :scm, :git

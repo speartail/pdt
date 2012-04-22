@@ -126,6 +126,16 @@ namespace :cache do
 
 end
 
+namespace :content do
+
+  desc 'Seed CMS pages'
+  task :seed do
+    Dir.glob(File.join(Dir.pwd, 'pages/*')).each do |p|
+      run %Q[#{mysql} -e "LOAD DATA INFILE '#{current_path}/pages/#{p}' INTO TABLE cms_page (content);"]
+    end
+  end
+end
+
 namespace :db do
 
   desc "Change configuration stored in DB"
