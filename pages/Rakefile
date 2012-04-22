@@ -1,0 +1,6 @@
+desc 'Fix all quotes'
+task :quotes do
+  system %q[ sed -i "s/'/\"/g" *.html ]
+end
+
+task :default => :quotes
