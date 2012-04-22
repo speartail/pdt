@@ -2,7 +2,8 @@ namespace :app do
 
   desc 'Create initial Magento configuration by running installer'
   task :setup_via_installer do
-    run "rm #{current_path}/public/app/etc/local.xml ; php -f #{current_path}/public/install.php -- \
+    run "rm -f #{current_path}/public/app/etc/local.xml"
+    run "php -f #{current_path}/public/install.php -- \
       --license_agreement_accepted 'yes' \
       --locale '#{mag_locale}' \
       --timezone '#{mag_timezone}' \
