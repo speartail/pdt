@@ -6,7 +6,7 @@ require './config/app_config'
 EMAIL = 'support@speartail.com'
 PASSWORD = SecureRandom.hex(5)
 
-set :mag_locale , 'en_us'
+set :mag_locale , 'en_US'
 set :mag_timezone, 'Asia/Singapore'
 set :mag_currency, 'SGD'
 set :mag_secure, 'no'
