@@ -79,10 +79,11 @@ end
 
 namespace :db do
 
-  MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
-
   desc "Change configuration stored in DB"
   task :config do
+
+    MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
+
     %w[home siteurl].each do |k|
       run %Q[#{MYSQL} -e "UPDATE #{db_prefix}options SET option_value = 'http://#{host}' WHERE option_name = '#{k}'"]
     end
