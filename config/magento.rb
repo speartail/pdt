@@ -2,7 +2,7 @@ namespace :app do
 
   desc 'Create initial Magento configuration by running installer'
   task :setup_via_installer do
-    run "php -f #{shared_path}/install.php -- \
+    run "php -f #{current_path}/install.php -- \
       --license_agreement_accepted 'yes' \
       --locale '#{mag_locale}' \
       --timezone '#{mag_timezone}' \
@@ -69,7 +69,7 @@ namespace :app do
             r.action 'none' # I actually don't know if this works or if we simply shouldn't write anything
           end
           r.subject 'Magento Store Debug Information'
-          r.email_address 'peter@speartail.com'
+          r.email_address 'notify@speartail.com'
           # trash can be leave or delete
           r.trash 'leave'
         end
