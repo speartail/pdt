@@ -42,19 +42,15 @@ namespace :app do
     run "ln -nfs #{release_path}/public/lib/Zend/Locale/Data/en_US.xml #{release_path}/public/lib/Zend/Locale/Data/en_us.xml"
   end
 
-  desc "Set permissions needed for install"
-  task :install_permissions do
-    [ 'app/etc' ].each do |f|
-      file="#{release_path}/public/#{f}"
-      run "chmod -f 777 #{file}" if remote_file_exists? file
-    end
-  end
-
   desc "Set permissions"
   task :permissions do
     %w[ mage pear ].each do |f|
       file="#{release_path}/public/#{f}"
       run "chmod -f 550 #{file}" if remote_file_exists? file
+    end
+    [ 'var' ].each do |f|
+      file="#{shared_path}/data/#{f}"
+      run "chmod -Rf 777 #{file}"
     end
   end
 
