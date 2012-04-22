@@ -21,7 +21,6 @@ puts "Found application: #{application}"
 load 'config/common' # must happen after the app specific loading due to :application
 load 'config/project' # place all overrides here
 
-
 set :copy_exclude, [ '.git' ]
 set :deploy_via, :remote_cache
 set :scm, :git
@@ -35,7 +34,7 @@ ssh_options[:forward_agent] = true
 
 before 'app:setup', 'app:prepare'
 before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup'
-after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'app:symlink'
+after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'cache:clear', 'app:symlink'
 after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
 
 namespace :config do

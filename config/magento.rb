@@ -1,7 +1,7 @@
 namespace :app do
 
   desc 'Create initial Magento configuration by running installer'
-  task :setup_via_installer do
+  task :setup do
     PASSWORD = SecureRandom.hex(5)
     run "rm -f #{current_path}/public/app/etc/local.xml"
     run "php -f #{current_path}/public/install.php -- \
@@ -27,11 +27,6 @@ namespace :app do
     run "mkdir -p #{shared_path}/errors"
     run "cp #{current_path}/public/app/etc/local.xml #{shared_path}/app/etc"
     puts "Set initial password: #{PASSWORD}"
-  end
-
-  desc 'Create initial configuration directly'
-  task :setup do
-    # setup_via_installer
   end
 
   desc "Make configuration symlink"
@@ -122,6 +117,7 @@ namespace :cache do
     %w[ cache ].each do |d|
       run "rm -rf #{shared_path}/data/var/#{d}/*"
     end
+    run %Q[ php -f #{current_path}/public/shell/indexer.php reindexall ]
   end
 
 end
