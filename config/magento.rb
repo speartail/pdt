@@ -130,7 +130,7 @@ namespace :content do
 
   desc 'Seed CMS pages'
   task :seed do
-    Dir.glob(File.join(Dir.pwd, 'pages/*')).each do |p|
+    Dir.glob(File.join(Dir.pwd, 'pages/*.html')).each do |p|
       page = File.basename p
       run %Q[#{mysql} -e "update cms_page set content = '$(cat #{current_path}/pages/#{page})' where identifier = '#{page.gsub('.html', '')}';"]
     end
