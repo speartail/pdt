@@ -34,6 +34,14 @@ namespace :app do
     run "ln -nfs #{shared_path}/errors/local.xml #{release_path}/public/errors/local.xml"
   end
 
+  desc "Set permissions needed for install"
+  task :install_permissions do
+    [ 'app/etc' ].each do |f|
+      file="#{release_path}/public/#{f}"
+      run "chmod -f 777 #{file}" if remote_file_exists? file
+    end
+  end
+
   desc "Set permissions"
   task :permissions do
     %w[ mage pear ].each do |f|

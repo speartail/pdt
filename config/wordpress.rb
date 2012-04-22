@@ -38,6 +38,14 @@ EOF
     run "ln -nfs #{release_path}/public #{appdir}"
   end
 
+  desc "Set permissions needed for install"
+  task :install_permissions do
+    [ ].each do |f|
+      file="#{release_path}/public/#{f}"
+      run "chmod -f 777 #{file}" if remote_file_exists? file
+    end
+  end
+
   desc "Set permissions"
   task :permissions do
     timthumb=File.join('public', 'wp-content', 'themes', 'default', 'scripts', 'timthumb.php')
