@@ -2,7 +2,8 @@ namespace :app do
 
   desc 'Create initial Magento configuration by running installer'
   task :setup_via_installer do
-    run "php -f #{current_path}/install.php -- \
+
+    run "rm #{current_path}/public/app/etc/local.xml ; php -f #{current_path}/public/install.php -- \
       --license_agreement_accepted 'yes' \
       --locale '#{mag_locale}' \
       --timezone '#{mag_timezone}' \
@@ -11,7 +12,7 @@ namespace :app do
       --db_name '#{db_name}' \
       --db_user '#{db_user}' \
       --db_pass '#{db_pass}' \
-      --url '#{domain}' \
+      --url 'http://#{domain}' \
       --use_rewrites 'yes' \
       --use_secure '#{mag_secure}' \
       --secure_base_url '#{mag_secure_url}' \
