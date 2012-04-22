@@ -48,7 +48,7 @@ namespace :app do
       file="#{release_path}/public/#{f}"
       run "chmod -f 550 #{file}" if remote_file_exists? file
     end
-    [ 'var' ].each do |f|
+    [ 'var/locks' ].each do |f|
       file="#{shared_path}/data/#{f}"
       run "chmod -Rf 777 #{file}"
     end
