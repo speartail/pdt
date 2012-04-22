@@ -1,5 +1,6 @@
 require 'logger'
 require 'ostruct'
+require 'yaml'
 
 class AppConfig
 
@@ -8,6 +9,7 @@ class AppConfig
   attr_reader :config
 
   def initialize(parms = {})
+
     if parms[:logger]
       @logger = parms[:logger]
       @old_level = @logger.level
@@ -17,12 +19,16 @@ class AppConfig
     @logger.level = parms[:level] || Logger::INFO
     found_yaml = false
     [ parms[:file], YAML_FILE ].each do |f|
+      @logger.debug "Trying to load file: #{f}"
       if !found_yaml && f && File.exist?(f)
-        @logger.debug "Loading YAML data from #{f}"
+        @logger.info "Loading YAML data from #{f}"
         begin
           @config = hashes2ostruct(YAML.load_file(f))
           found_yaml = true
-        rescue ; end
+        rescue Exception => e
+          @logger.error "Unable to load #{f}: #{e.message}"
+          exit 1
+        end
       end
     end
     @logger.level = @old_level if @old_level
