@@ -33,7 +33,7 @@ default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 
 before 'app:setup', 'app:prepare'
-before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup', 'app:setup'
+before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup'
 after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'app:symlink'
 after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
 

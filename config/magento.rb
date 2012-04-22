@@ -31,7 +31,7 @@ namespace :app do
 
   desc 'Create initial configuration directly'
   task :setup do
-    setup_via_installer
+    # setup_via_installer
   end
 
   desc "Make configuration symlink"
