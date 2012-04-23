@@ -26,6 +26,7 @@ namespace :app do
     run "mkdir -p #{shared_path}/app/etc"
     run "mkdir -p #{shared_path}/errors"
     run "cp #{current_path}/public/app/etc/local.xml #{shared_path}/app/etc"
+    run %Q[ #{mysql} -e "delete from adminnotification_inbox;" ]
     puts "Set initial password: #{PASSWORD}"
   end
 
