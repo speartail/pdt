@@ -146,6 +146,23 @@ namespace :db do
 
 end
 
+namespace :mode do
+
+  desc 'Set server to development mode'
+  task :dev do
+    top.app.errors.online
+    run "cd #{current_path}/public ; zf disable mage-core-cache"
+    top.cache.clear
+  end
+
+  desc 'Set server to production mode'
+  task :prod do
+    top.app.errors.disable
+    run "cd #{current_path}/public ; zf enable mage-core-cache"
+    top.cache.clear
+  end
+end
+
 namespace :user do
 
   namespace :admin do
