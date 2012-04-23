@@ -176,7 +176,8 @@ namespace :mode do
   end
 end
 
-namespace :user do
+# do not call this user as it clashes with the user variable
+namespace :users do
 
   namespace :admin do
     desc "Reset admin password to 'password'"
