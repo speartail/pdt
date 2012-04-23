@@ -97,12 +97,12 @@ namespace :app do
   namespace :hints do
     desc 'Enable hints'
     task :enable do
-      run %Q[ #{mysql} -e "update core_config_data set value = 1 where path = 'dev/debug/template_hints';]
+      run %Q[ #{mysql} -e "update core_config_data set value = 1 where path = 'dev/debug/template_hints';"]
     end
 
     desc 'Disable hints'
     task :disable do
-      run %Q[ #{mysql} -e "update core_config_data set value = 0 where path = 'dev/debug/template_hints';]
+      run %Q[ #{mysql} -e "update core_config_data set value = 0 where path = 'dev/debug/template_hints';"]
     end
   end
 end
