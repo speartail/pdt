@@ -46,7 +46,7 @@ namespace :app do
     end
     [ 'var/locks' ].each do |f|
       file="#{shared_path}/data/#{f}"
-      run "chmod -Rf 777 #{file}"
+      run "chmod -Rf 777 #{file}" if remote_file_exists? file
     end
   end
 
@@ -129,7 +129,7 @@ namespace :cache do
     %w[ cache ].each do |d|
       run "rm -rf #{shared_path}/data/var/#{d}/*"
     end
-    run %Q[ php -f #{current_path}/public/shell/indexer.php reindexall ]
+    run %Q[ php -f #{current_path}/public/shell/indexer.php reindexall ] if remote_file_exists?("#{current_path}/public/shell/indexer.php")
   end
 
 end
