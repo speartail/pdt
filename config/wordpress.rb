@@ -77,6 +77,13 @@ namespace :cache do
 
 end
 
+namespace :content do
+
+  desc 'Seed CMS pages'
+  task :seed do ; end
+
+end
+
 namespace :db do
 
   desc "Change configuration stored in DB"
