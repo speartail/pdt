@@ -1,7 +1,7 @@
 require 'capistrano/php'
 require 'fileutils'
 set :stages, %w(local dev preprod prod)
-set :default_stage, 'dev'
+set :default_stage, 'local'
 require 'capistrano/ext/multistage'
 
 if Dir.exists?('public/wp-admin')
@@ -34,7 +34,7 @@ ssh_options[:forward_agent] = true
 
 before 'app:setup', 'app:prepare'
 before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup'
-after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'cache:clear', 'app:symlink', 'db:seed', 'content:seed'
+after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'cache:clear', 'app:symlink'#, 'db:seed', 'content:seed'
 after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
 
 namespace :config do
