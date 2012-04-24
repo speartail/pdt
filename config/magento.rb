@@ -3,7 +3,7 @@ namespace :app do
   desc 'Create initial Magento configuration by running installer'
   task :setup do
     PASSWORD = SecureRandom.hex(5)
-    run "rm -f #{current_path}/public/app/etc/local.xml"
+    run "rm -f #{shared_path}/app/etc/local.xml"
     run "php -f #{current_path}/public/install.php -- \
       --license_agreement_accepted 'yes' \
       --locale '#{mag_locale}' \
@@ -25,7 +25,7 @@ namespace :app do
       --admin_password '#{PASSWORD}'"
     run "mkdir -p #{shared_path}/app/etc"
     run "mkdir -p #{shared_path}/errors"
-    run "cp #{current_path}/public/app/etc/local.xml #{shared_path}/app/etc"
+    run "cp #{release_path}/public/app/etc/local.xml #{shared_path}/app/etc"
     run %Q[ #{mysql} -e "delete from adminnotification_inbox;" ]
     puts "Set initial password: #{PASSWORD}"
   end
@@ -129,7 +129,7 @@ namespace :cache do
     %w[ cache ].each do |d|
       run "rm -rf #{shared_path}/data/var/#{d}/*"
     end
-    run %Q[ php -f #{current_path}/public/shell/indexer.php reindexall ] if remote_file_exists?("#{current_path}/public/shell/indexer.php")
+    # run %Q[ php -f #{release_path}/public/shell/indexer.php reindexall ] if remote_file_exists?("#{release_path}/public/shell/indexer.php")
   end
 
 end
@@ -164,14 +164,14 @@ namespace :mode do
   desc 'Set server to development mode'
   task :dev do
     top.app.errors.online
-    run "cd #{current_path}/public ; zf disable mage-core-cache"
+    # run "cd #{current_path}/public ; zf disable mage-core-cache"
     top.cache.clear
   end
 
   desc 'Set server to production mode'
   task :prod do
     top.app.errors.disable
-    run "cd #{current_path}/public ; zf enable mage-core-cache"
+    # run "cd #{current_path}/public ; zf enable mage-core-cache"
     top.cache.clear
   end
 end
@@ -182,7 +182,7 @@ namespace :users do
   namespace :admin do
     desc "Reset admin password to 'password'"
     task :reset do
-      run %Q[#{mysql} -e "UPDATE admin_user SET password=CONCAT(MD5('HelloHellopassword'), ':HelloHello') WHERE username = 'admin';"]
+      run %Q[#{mysql} -e "UPDATE admin_user SET password=CONCAT(MD5('qXpassword'), ':qX') WHERE username = 'admin';"]
     end
   end
 end
