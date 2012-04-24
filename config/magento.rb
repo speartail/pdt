@@ -4,7 +4,7 @@ namespace :app do
   task :setup do
     PASSWORD = SecureRandom.hex(5)
     run "rm -f #{shared_path}/app/etc/local.xml"
-    run "php -f #{current_path}/public/install.php -- \
+    run "php -f #{release_path}/public/install.php -- \
       --license_agreement_accepted 'yes' \
       --locale '#{mag_locale}' \
       --timezone '#{mag_timezone}' \
