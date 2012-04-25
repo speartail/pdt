@@ -5,6 +5,7 @@ set :stages, %w(local dev preprod prod)
 set :default_stage, 'local'
 require 'capistrano/ext/multistage'
 
+require './config/app_config'
 @app_config = AppConfig.new
 set :application, @app_config.config.project_type.to_s
 load "config/#{application}"

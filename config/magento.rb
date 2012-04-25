@@ -142,7 +142,7 @@ namespace :content do
     sql=%Q[UPDATE cms_page
       SET
         content = '$(cat #{remote_file})',
-        update_time = '#{Time.now.strftime '#{TIME_FORMAT}'}'
+        update_time = '#{Time.now.strftime TIME_FORMAT}'
       WHERE identifier = '#{page}';]
 
     return sql
