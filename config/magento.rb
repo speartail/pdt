@@ -138,41 +138,45 @@ namespace :content do
 
   TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-  def generate_page_sql(page, remote_file)
-    sql=%Q[UPDATE cms_page
+  def generate_item_sql(table, item, file)
+    sql=%Q[
+      UPDATE #{table}
       SET
         content = '$(cat #{remote_file})',
         update_time = '#{Time.now.strftime TIME_FORMAT}'
-      WHERE identifier = '#{page}';]
+      WHERE
+        identifier = '#{item}';]
 
     return sql
   end
 
-  def generate_create_page_sql(page)
+  def generate_page_sql(page, remote_file)
+    generate_item_sql 'cms_page', page, remote_file
+  end
+
+  def generate_block_sql(block, remote_file)
+    generate_item_sql 'cms_block', block, remote_file
+  end
+
+  def generate_page_meta_sql(page_meta)
     def hash_to_sql(h)
       sql = ''
       h.each_pair do |k,v|
-        sql="#{k} = '#{v}', #{sql}"
+        sql="#{k} = '#{v}', #{sql}" unless [ 'identifier' ].include? k
       end
       sql.to_s.gsub(/,\s+$/, '')
     end
     t = Time.now.strftime TIME_FORMAT
-    sql=%Q[REPLACE INTO cms_page SET #{hash_to_sql page},
-           creation_time = '#{t}',
-           update_time = '#{t}';]
+    sql=%Q[
+      UPDATE cms_page
+      SET
+        #{hash_to_sql page_meta},
+        creation_time = '#{t}',
+        update_time = '#{t}'
+      WHERE
+        identifier = '#{page_meta['identifier']}' ;]
 
     return sql
-  end
-
-  def generate_block_sql(local_file, remote_file)
-  end
-
-  desc 'Load static blocks'
-  task :blocks do
-    Dir.glob(File.join(Dir.pwd, 'data', 'blocks', '*.html')).each do |p|
-      page = File.basename p
-      run %Q[#{mysql} -e "update cms_page set content = '$(cat #{current_path}/pages/#{page})' where identifier = '#{page.gsub('.html', '')}';"]
-    end
   end
 
 end

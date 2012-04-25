@@ -83,6 +83,13 @@ namespace :content do
     raise NotImplementedError, 'Check magento for how this is done!'
   end
 
+  def generate_block_sql(block, remote_file)
+    raise NotImplementedError, 'Check magento for how this is done!'
+  end
+
+  def generate_page_meta_sql(page_meta, remote_file)
+    raise NotImplementedError, 'Check magento for how this is done!'
+  end
 end
 
 namespace :db do
@@ -91,10 +98,18 @@ namespace :db do
   task :config do
 
     %w[home siteurl].each do |k|
-      run %Q[#{mysql} -e "UPDATE #{db_prefix}options SET option_value = 'http://#{host}' WHERE option_name = '#{k}'"]
+      sql=%Q[
+        UPDATE #{db_prefix}options
+        SET option_value = 'http://#{host}'
+        WHERE option_name = '#{k}';]
+      run %Q[#{mysql} -e "#{sql}"]
     end
     %w[template stylesheet].each do |k|
-      run %Q[#{mysql} -e "UPDATE #{db_prefix}options SET option_value = 'default' WHERE option_name = '#{k}'"]
+      sql=%Q[
+        UPDATE #{db_prefix}options
+        SET option_value = '#{@app_config.config.theme_dir}'
+        WHERE option_name = '#{k}';]
+      run %Q[#{mysql} -e "#{sql}"]
     end
   end
 end

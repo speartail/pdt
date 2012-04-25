@@ -101,22 +101,39 @@ end
 
 namespace :content do
 
-  desc 'Load CMS pages'
-  task :pages do
+  desc 'Update CMS meta data - you MIGHT need to resave all pages manually!'
+  task :meta do
     root_dir = File.join(Dir.pwd, 'data', 'pages')
     begin
       pages = YAML.load_file(File.join(root_dir, 'pages.yml'))
       pages.each do |page|
-        run %Q[#{mysql} -e "#{generate_create_page_sql(page)}"]
+        run %Q[#{mysql} -e "#{generate_page_meta_sql(page)}"]
       end
     rescue
       puts 'Unable to load pages.yml. Continuing...'
     end
+    puts 'WARNING! You MIGHT have to resave all pages for this to work!'
+  end
+
+  desc 'Load CMS pages'
+  task :pages do
+    root_dir = File.join(Dir.pwd, 'data', 'pages')
     Dir.glob(File.join(root_dir, '*.html')).each do |p|
       page = File.basename(p).gsub('.html', '')
       file = "/tmp/#{random_chars 12}_#{page}"
       upload p, file
       run %Q[#{mysql} -e "#{generate_page_sql(page, file)}"]
+    end
+  end
+
+  desc 'Load CMS blocks (if supported)'
+  task :blocks do
+    root_dir = File.join(Dir.pwd, 'data', 'blocks')
+    Dir.glob(File.join(root_dir, '*.html')).each do |b|
+      block = File.basename(b).gsub('.html', '')
+      file = "/tmp/#{random_chars 12}_#{block}"
+      upload block, file
+      run %Q[#{mysql} -e "#{generate_block_sql(block, file)}"]
     end
   end
 
