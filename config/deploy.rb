@@ -42,9 +42,9 @@ def random_chars(length = 64)
   return rand(36**length).to_s(36)
 end
 
-def put_and_run_sql(local_file)
-  rem = "/tmp/#{random_chars 8}_#{File.basename f}"
-  put f, rem
+def upload_and_run_sql(local_file)
+  rem = "/tmp/#{random_chars 8}_#{File.basename local_file}"
+  upload local_file, rem
   run "#{mysql} < #{rem}" if remote_file_exists?(rem)
 end
 
@@ -113,7 +113,7 @@ namespace :content do
     Dir.glob(File.join(Dir.pwd, 'data', 'pages', '*.html')).each do |p|
       page = File.basename(p).gsub('.html', '')
       file = "/tmp/#{random_chars 12}_#{page}"
-      put p, file
+      upload p, file
       run %Q[#{mysql} -e "#{generate_page_sql(page, file)}"]
     end
   end
@@ -131,14 +131,14 @@ namespace :db do
   desc "Seed the data stored in 'db/seed/*.sql - happens automatically on deploy'"
   task :seed do
     Dir.glob(File.join(Dir.pwd, 'data', 'db', 'seed', '*.sql')).each do |f|
-      put_and_run_sql f
+      upload_and_run_sql f
     end
   end
 
   desc "Load the data stored in 'db/*.sql'"
-  task :load do
+  task :load_sql do
     Dir.glob(File.join(Dir.pwd, 'data', 'db', '*.sql')).each do |f|
-      put_and_run_sql f
+      upload_and_run_sql f
     end
   end
 
