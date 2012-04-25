@@ -136,12 +136,30 @@ end
 
 namespace :content do
 
+  TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+
   def generate_page_sql(page, remote_file)
     sql=%Q[UPDATE cms_page
       SET
         content = '$(cat #{remote_file})',
-        update_time = '#{Time.now.strftime '%Y-%m-%d %H:%M:%S'}'
+        update_time = '#{Time.now.strftime '#{TIME_FORMAT}'}'
       WHERE identifier = '#{page}';]
+
+    return sql
+  end
+
+  def generate_create_page_sql(page)
+    def hash_to_sql(h)
+      sql = ''
+      h.each_pair do |k,v|
+        sql="#{k} = '#{v}', #{sql}"
+      end
+      sql.to_s.gsub(/,\s+$/, '')
+    end
+    t = Time.now.strftime TIME_FORMAT
+    sql=%Q[REPLACE INTO cms_page SET #{hash_to_sql page},
+           creation_time = '#{t}',
+           update_time = '#{t}';]
 
     return sql
   end

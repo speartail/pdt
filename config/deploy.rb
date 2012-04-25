@@ -1,5 +1,6 @@
 require 'capistrano/php'
 require 'fileutils'
+require 'yaml'
 set :stages, %w(local dev preprod prod)
 set :default_stage, 'local'
 require 'capistrano/ext/multistage'
@@ -110,7 +111,17 @@ namespace :content do
 
   desc 'Load CMS pages'
   task :pages do
-    Dir.glob(File.join(Dir.pwd, 'data', 'pages', '*.html')).each do |p|
+    root_dir = File.join(Dir.pwd, 'data', 'pages')
+    begin
+      pages = YAML.load_file(File.join(root_dir, 'pages.yml'))
+      pages.each do |page|
+        # TODO Fix this when we figure out why magento throws a 404 when updating the home page
+        # run %Q[#{mysql} -e "#{generate_create_page_sql(page)}"]
+      end
+    rescue
+      puts 'Unable to load pages.yml. Continuing...'
+    end
+    Dir.glob(File.join(root_dir, '*.html')).each do |p|
       page = File.basename(p).gsub('.html', '')
       file = "/tmp/#{random_chars 12}_#{page}"
       upload p, file
