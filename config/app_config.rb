@@ -31,6 +31,19 @@ class AppConfig
         end
       end
     end
+    base = 'public'
+    if Dir.exists? File.join(base, 'skin')
+      @config.project_type = :magento
+      @config.theme_root = File.join base, 'skin', 'frontend', 'default', @config.theme_dir
+    elsif Dir.exists? File.join(base, 'wp-content')
+      @config.project_type = :wordpress
+      @config.theme_root = File.join base, 'wp-content', 'themes', @config.theme_dir
+    elsif Dir.exists? File.join(base, 'some_random_modx_path')
+      @config.project_type = :modx
+      @config.theme_root = File.join base, 'gibblygob', @config.theme_dir
+    else
+      raise NotImplementedError, 'I do not have support for this project type'
+    end
     @logger.level = @old_level if @old_level
   end
 

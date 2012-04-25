@@ -8,33 +8,19 @@ require './config/app_config'
 # Set this to the root of your project when deployed:
 http_path = "/"
 
-@base = 'public'
-if Dir.exists? File.join(@base, 'skin')
-  # magento
-  @base = File.join @base, 'skin', 'frontend', 'default', @app_config.config.theme_dir
-elsif Dir.exists? File.join(@base, 'wp-content')
-  # wordpress
-  @base = File.join @base, 'wp-content', 'themes', @app_config.config.theme_dir
-elsif Dir.exists? File.join(@base, 'some_random_modx_path')
-  # modx
-  @base = File.join @base, 'gibblygob', @app_config.config.theme_dir
-else
-  puts 'Unable to find project'
-end
-
 found_css = false
-css = File.join @base, 'css'
+css = File.join @app_config.config.theme_root, 'css'
 [ 'css', 'CSS', 'stylesheets' ].each do |d|
-  dir = File.join @base, d
+  dir = File.join @app_config.config.theme_root, d
   if Dir.exists?(dir) && !found_css
     found_css = true
     css = dir
   end
 end
 css_dir = css
-sass_dir = File.join @base, 'sass'
-images_dir = File.join @base, 'images'
-javascripts_dir = File.join @base, 'javascripts'
+sass_dir = File.join @app_config.config.theme_root, 'sass'
+images_dir = File.join @app_config.config.theme_root, 'images'
+javascripts_dir = File.join @app_config.config.theme_root, 'javascripts'
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed

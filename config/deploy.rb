@@ -5,20 +5,11 @@ set :stages, %w(local dev preprod prod)
 set :default_stage, 'local'
 require 'capistrano/ext/multistage'
 
-if Dir.exists?('public/wp-admin')
-  set :application, 'wordpress'
-  raise "You must put the theme in a directory named 'default' or create a symlink named 'default' to the relevant directory." unless File.exists?('public/wp-content/themes/default')
-  load 'config/wordpress'
-elsif Dir.exists?('public/app')
-  set :application, 'magento'
-  load 'config/magento'
-elsif Dir.exists?('public/connectors')
-  set :application, 'modx'
-  load 'config/modx'
-else
-  raise 'Neither WordPress, Magento nor MODx were found. Aborting...'
-end
+@app_config = AppConfig.new
+set :application, @app_config.config.project_type.to_s
+load "config/#{application}"
 puts "Found application: #{application}"
+
 load 'config/common' # must happen after the app specific loading due to :application
 load 'config/project' # place all overrides here
 
