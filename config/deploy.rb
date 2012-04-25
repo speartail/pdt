@@ -107,8 +107,7 @@ namespace :content do
     begin
       pages = YAML.load_file(File.join(root_dir, 'pages.yml'))
       pages.each do |page|
-        # TODO Fix this when we figure out why magento throws a 404 when updating the home page
-        # run %Q[#{mysql} -e "#{generate_create_page_sql(page)}"]
+        run %Q[#{mysql} -e "#{generate_create_page_sql(page)}"]
       end
     rescue
       puts 'Unable to load pages.yml. Continuing...'
