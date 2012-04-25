@@ -136,28 +136,39 @@ end
 
 namespace :content do
 
-  desc 'Seed CMS pages'
-  task :seed do
-    Dir.glob(File.join(Dir.pwd, 'pages/*.html')).each do |p|
+  def generate_page_sql(page, remote_file)
+    sql=%Q[UPDATE cms_page
+      SET content = '$(cat #{remote_file})',
+          update_time = #{Time.now.strftime '%Y-%m-%d %H:%M:%S'}
+      WHERE identifier = '#{page}';"]
+
+    return sql
+  end
+
+  def generate_block_sql(local_file, remote_file)
+  end
+
+  desc 'Load static blocks'
+  task :blocks do
+    Dir.glob(File.join(Dir.pwd, 'data', 'blocks', '*.html')).each do |p|
       page = File.basename p
       run %Q[#{mysql} -e "update cms_page set content = '$(cat #{current_path}/pages/#{page})' where identifier = '#{page.gsub('.html', '')}';"]
     end
   end
+
 end
 
 namespace :db do
 
   desc "Change configuration stored in DB"
   task :config do
-    MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
     %w[ secure unsecure ].each do |s|
       sql = "update core_config_data set value = 'http://#{domain}/' where path = 'web/#{s}/base_url';"
-      run "echo '#{sql}' | #{MYSQL}"
+      run "echo '#{sql}' | #{mysql}"
     end
   end
 
 end
-
 
 namespace :mode do
 

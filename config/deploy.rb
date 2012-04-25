@@ -34,8 +34,19 @@ ssh_options[:forward_agent] = true
 
 before 'app:setup', 'app:prepare'
 before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup'
-after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'cache:clear', 'app:symlink'#, 'db:seed', 'content:seed'
+after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'cache:clear', 'app:symlink'
+after  'app:symlink', 'db:seed'
 after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
+
+def random_chars(length = 64)
+  return rand(36**length).to_s(36)
+end
+
+def put_and_run_sql(local_file)
+  rem = "/tmp/#{random_chars 8}_#{File.basename f}"
+  put f, rem
+  run "#{mysql} < #{rem}" if remote_file_exists?(rem)
+end
 
 namespace :config do
 
@@ -95,6 +106,20 @@ namespace :app do
 
 end
 
+namespace :content do
+
+  desc 'Load CMS pages'
+  task :pages do
+    Dir.glob(File.join(Dir.pwd, 'data', 'pages', '*.html')).each do |p|
+      page = File.basename(p).gsub('.html', '')
+      file = "/tmp/#{random_chars 12}_#{page}"
+      put p, file
+      run %Q[#{mysql} -e "#{generate_page_sql(page, file)}"]
+    end
+  end
+
+end
+
 # TODO create database dump/restore
 namespace :db do
 
@@ -103,11 +128,18 @@ namespace :db do
     task :restore do ; end
   end
 
-  desc "Seed the data stored in 'db/seed.sql'"
+  desc "Seed the data stored in 'db/seed/*.sql - happens automatically on deploy'"
   task :seed do
-    MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
-    file="#{current_path}/db/seed.sql"
-    run "#{MYSQL} < #{file}" if remote_file_exists?(file)
+    Dir.glob(File.join(Dir.pwd, 'data', 'db', 'seed', '*.sql')).each do |f|
+      put_and_run_sql f
+    end
+  end
+
+  desc "Load the data stored in 'db/*.sql'"
+  task :load do
+    Dir.glob(File.join(Dir.pwd, 'data', 'db', '*.sql')).each do |f|
+      put_and_run_sql f
+    end
   end
 
   desc 'Dump the remote database'

@@ -79,8 +79,9 @@ end
 
 namespace :content do
 
-  desc 'Seed CMS pages'
-  task :seed do ; end
+  def generate_page_sql(page, remote_file)
+    raise NotImplementedError, 'Check magento for how this is done!'
+  end
 
 end
 
@@ -89,13 +90,11 @@ namespace :db do
   desc "Change configuration stored in DB"
   task :config do
 
-    MYSQL = "mysql -u#{db_user} -p#{db_pass} -h#{db_host} #{db_name}"
-
     %w[home siteurl].each do |k|
-      run %Q[#{MYSQL} -e "UPDATE #{db_prefix}options SET option_value = 'http://#{host}' WHERE option_name = '#{k}'"]
+      run %Q[#{mysql} -e "UPDATE #{db_prefix}options SET option_value = 'http://#{host}' WHERE option_name = '#{k}'"]
     end
     %w[template stylesheet].each do |k|
-      run %Q[#{MYSQL} -e "UPDATE #{db_prefix}options SET option_value = 'default' WHERE option_name = '#{k}'"]
+      run %Q[#{mysql} -e "UPDATE #{db_prefix}options SET option_value = 'default' WHERE option_name = '#{k}'"]
     end
   end
 end
@@ -108,6 +107,3 @@ def generate_keys
   return keys
 end
 
-def random_chars(length = 64)
-  return rand(36**length).to_s(36)
-end
