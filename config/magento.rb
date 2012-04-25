@@ -138,9 +138,10 @@ namespace :content do
 
   def generate_page_sql(page, remote_file)
     sql=%Q[UPDATE cms_page
-      SET content = '$(cat #{remote_file})',
-          update_time = #{Time.now.strftime '%Y-%m-%d %H:%M:%S'}
-      WHERE identifier = '#{page}';"]
+      SET
+        content = '$(cat #{remote_file})',
+        update_time = '#{Time.now.strftime '%Y-%m-%d %H:%M:%S'}'
+      WHERE identifier = '#{page}';]
 
     return sql
   end
