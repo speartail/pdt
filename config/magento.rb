@@ -162,7 +162,7 @@ namespace :content do
     def hash_to_sql(h)
       sql = ''
       h.each_pair do |k,v|
-        sql="#{k} = '#{v}', #{sql}" unless [ 'identifier' ].include? k
+        sql="#{k} = '#{v}', #{sql}" unless [ 'identifier', 'page_id' ].include? k
       end
       sql.to_s.gsub(/,\s+$/, '')
     end
