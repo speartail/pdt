@@ -142,7 +142,7 @@ namespace :content do
     sql=%Q[
       UPDATE #{table}
       SET
-        content = '$(cat #{remote_file})',
+        content = '$(cat #{file})',
         update_time = '#{Time.now.strftime TIME_FORMAT}'
       WHERE
         identifier = '#{item}';]
