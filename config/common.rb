@@ -24,5 +24,5 @@ set :wp_lang, ''
 if @app_config && @app_config.config && @app_config.config.repos
   set :repository, @app_config.config.repos
 else
-  set(:repository, "git@github.com:speartail/#{application}.git") if [ 'magento', 'wordpress' ].include?(application)
+  set(:repository, "git@github.com:speartail/site_#{application}.git") if [ 'magento', 'modx', 'wordpress' ].include?(application)
 end
