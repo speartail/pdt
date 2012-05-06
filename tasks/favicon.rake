@@ -3,8 +3,6 @@ require 'favicon_maker'
 require './config/app_config'
 @app_config = AppConfig.new
 
-puts @app_config.config
-
 namespace :favicon do
 
   desc 'Generate favicons'
