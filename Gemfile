@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem 'awesome_print'
 gem 'builder'
 gem 'capistrano'
 gem 'capistrano_colors'
@@ -24,6 +25,7 @@ gem 'guard'
 gem 'guard-bundler'
 gem 'guard-compass'
 gem 'guard-sass'
+gem 'guard-shell'
 gem 'guard-sprockets'
 gem 'libnotify'         # for guard
 gem 'rb-inotify'        # for guard

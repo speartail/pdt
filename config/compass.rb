@@ -1,3 +1,4 @@
+$stdout.sync = true
 # Require any additional compass plugins here.
 #
 # Other requires
