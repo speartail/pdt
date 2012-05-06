@@ -15,6 +15,7 @@ gem 'w3c_validators'
 # css and sprockets
 gem 'compass'
 gem 'execjs'       # for sprockets and coffee
+gem 'oily_png'     # compass uses this to compress png
 gem 'sass'
 gem 'therubyracer' # for sprockets and coffee
 
