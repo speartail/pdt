@@ -56,7 +56,7 @@ OptionParser.new do|opts|
   end
 
   opts.on('-p', '--port PORT', 'Port to listen on' ) do |arg|
-    options.port = arg if arg > 1023
+    options.port = arg if arg.to_i > 1023
   end
 
   opts.on('-d', '--directory DIRECTORY', 'Directory to serve' ) do |arg|
