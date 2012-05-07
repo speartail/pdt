@@ -10,7 +10,9 @@ gem 'capistrano-spec'
 gem 'capistrano-uptodate'
 gem 'favicon_maker'
 gem 'foreman'
+gem 'livereload'
 gem 'rake'
+gem 'rack-livereload'
 gem 'w3c_validators'
 
 # css and sprockets

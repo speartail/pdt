@@ -12,10 +12,12 @@ SERVER_HOST = '0.0.0.0'
 
 require 'awesome_print'
 require 'optparse'
+require 'ostruct'
 require 'thin'
 require 'rack-legacy'
 require 'rack/legacy/cgi'
 require 'rack/legacy/php'
+require 'rack-livereload'
 
 # Handler to sort of simulate Apache's DirectoryIndex directive
 class DirectoryIndex
@@ -41,19 +43,24 @@ class DirectoryIndex
   end
 end
 
-options = {}
-options[:ip] = SERVER_HOST
-options[:port] = SERVER_PORT
+options = OpenStruct.new(
+  ip: SERVER_HOST,
+  port: SERVER_PORT,
+  directory: SRC_PATH)
 
 OptionParser.new do|opts|
   opts.banner = "Usage: #{File.basename __FILE__} [options]"
 
-  opts.on('-i', '--ip IP', 'IP address to listen on' ) do |ip|
-    options[:ip] = ip
+  opts.on('-i', '--ip IP', 'IP address to listen on' ) do |arg|
+    options.ip = arg
   end
 
-  opts.on('-p', '--port PORT', 'Port to listen on' ) do |port|
-    options[:port] = port
+  opts.on('-p', '--port PORT', 'Port to listen on' ) do |arg|
+    options.port = arg if arg > 1023
+  end
+
+  opts.on('-d', '--directory DIRECTORY', 'Directory to serve' ) do |arg|
+    options.directory = arg if Dir.exists?(arg)
   end
 
   opts.on('-h', '--help', 'Display this screen' ) do
@@ -63,14 +70,16 @@ OptionParser.new do|opts|
 end.parse!
 
 app = Rack::Builder.new do
-  use DirectoryIndex, SRC_PATH,
+  use DirectoryIndex, options.directory,
     ['index.php', 'index.html', 'index.htm', 'default.htm']
 
   use Rack::ShowExceptions
-  use Rack::Legacy::Php, SRC_PATH
-  use Rack::Legacy::Cgi, SRC_PATH
+  use Rack::Legacy::Php, options.directory
+  use Rack::Legacy::Cgi, options.directory
 
-  run Rack::Directory.new(SRC_PATH)
+  use Rack::LiveReload, no_swf: true
+
+  run Rack::Directory.new(options.directory)
 end
 
-Rack::Handler::Thin.run(app, { :Host => options[:ip], :Port => options[:port] })
+Rack::Handler::Thin.run(app, { Host: options.ip, Port: options.port })
