@@ -14,9 +14,9 @@ end
 guard 'shell' do
   puts "Guard::Shell is watching public for files to copy"
   options = { :verbose => true }
-  watch(/^public\/(.*)\.(html|phtml|php|xml|css|png|jpg)$/) do |f|
+  watch(%r{public\/(.*\.(html|phtml|php|xml|css|png|jpg))$} do |f|
     source = f[0]
-    target = File.join(WEB_ROOT, source.gsub(/^public\//, ''))
+    target = File.join(WEB_ROOT, f[1])
     target_dir = File.dirname target
     FileUtils.rm_rf(target, options) if File.exists?(target)
     if File.exists?(source)
