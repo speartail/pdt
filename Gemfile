@@ -26,9 +26,8 @@ gem 'therubyracer' # for sprockets and coffee
 gem 'guard'
 gem 'guard-bundler'
 gem 'guard-compass'
-gem 'guard-sass'
+# gem 'guard-sass'
 gem 'guard-shell'
-gem 'guard-sprockets'
 gem 'libnotify'         # for guard
 gem 'rb-inotify'        # for guard
 
