@@ -24,7 +24,7 @@ guard :shell do
   options = { :verbose => true }
   watch(%r{public/(.*)}) do |f|
     source = f[0]
-    ext File.extname(source)
+    ext = File.extname(source)
     puts "#{source} was changed"
     # if File.directory?(source) || EXTENSIONS.include?(ext)
     #   target = File.join(WEB_ROOT, f[1])
