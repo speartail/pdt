@@ -1,3 +1,5 @@
+$stdout.sync = true
+
 require './config/app_config'
 
 EXTENSIONS = %w[ html phtml inc php xml css png jpg ]
