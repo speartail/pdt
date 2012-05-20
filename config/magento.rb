@@ -186,7 +186,7 @@ namespace :db do
   desc "Change configuration stored in DB"
   task :config do
     %w[ secure unsecure ].each do |s|
-      sql = "update core_config_data set value = 'http://#{domain}/' where path = 'web/#{s}/base_url';"
+      sql = "update core_config_data set value = \"http://#{domain}/\" where path = \"web/#{s}/base_url\";"
       run "echo '#{sql}' | #{mysql}"
     end
   end
