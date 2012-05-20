@@ -28,7 +28,7 @@ ssh_options[:forward_agent] = true
 before 'app:setup', 'app:prepare'
 before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup'
 after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'cache:clear', 'app:symlink'
-after  'app:symlink', 'db:seed'
+after  'app:symlink', 'db:seed', 'content:pages'
 after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
 
 def random_chars(length = 64)
