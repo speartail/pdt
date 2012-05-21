@@ -120,7 +120,7 @@ namespace :cache do
 
   desc 'Symlink directories'
   task :symlink do
-    %w[ media var ].each { |d| run "rm -rf #{release_path}/public/#{d} ; ln -nfs #{shared_path}/data/#{d} #{release_path}/public" }
+    %w[ media var ].each { |d| run "rm -rf #{current_path}/public/#{d} ; ln -nfs #{shared_path}/data/#{d} #{current_path}/public/" }
   end
 
   desc 'Clear cache'
@@ -129,7 +129,9 @@ namespace :cache do
     %w[ cache ].each do |d|
       run "rm -rf #{shared_path}/data/var/#{d}/*"
     end
-    # run %Q[ php -f #{release_path}/public/shell/indexer.php reindexall ] if remote_file_exists?("#{release_path}/public/shell/indexer.php")
+    # product image cache (like thumbnails)
+    run "rm -rf #{shared_path}/data/media/catalog/products/cache"
+    run %Q[ php -f #{current_path}/public/shell/indexer.php reindexall ] if remote_file_exists?("#{current_path}/public/shell/indexer.php")
   end
 
 end
