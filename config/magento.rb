@@ -120,7 +120,7 @@ namespace :cache do
 
   desc 'Symlink directories'
   task :symlink do
-    %w[ media var ].each { |d| run "rm -rf #{current_path}/public/#{d} ; ln -nfs #{shared_path}/data/#{d} #{current_path}/public/" }
+    %w[ media var ].each { |d| run "rm -rf #{release_path}/public/#{d} ; ln -nfs #{shared_path}/data/#{d} #{release_path}/public/" }
   end
 
   desc 'Clear cache'
