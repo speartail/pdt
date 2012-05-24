@@ -24,6 +24,12 @@ gem 'oily_png'     # compass uses this to compress png
 gem 'sass'
 gem 'therubyracer' # for sprockets and coffee
 
+# dbs
+gem 'mysql'
+gem 'mysql2'
+gem 'pg'
+gem 'sqlite3'
+
 # guard
 gem 'guard'
 gem 'guard-bundler'
