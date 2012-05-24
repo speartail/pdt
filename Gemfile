@@ -14,6 +14,7 @@ gem 'foreman'
 gem 'livereload'
 gem 'rake'
 gem 'rack-livereload'
+gem 'taps'
 gem 'w3c_validators'
 
 # css and sprockets
