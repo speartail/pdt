@@ -204,6 +204,11 @@ namespace :db do
 
 end
 
+desc 'Generate robots.txt'
+task :robots do
+  put "Sitemap: http://#{domain}/sitemap.xml", "#{current_path}/robots.txt"
+end
+
 role(:app) { host }
 role(:web) { host }
 role(:db, :primary => true) { host }
