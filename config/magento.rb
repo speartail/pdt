@@ -113,7 +113,7 @@ namespace :cache do
 
   desc 'Create directories'
   task :setup do
-    %[ media var ].each do |d|
+    %w[ media var ].each do |d|
       run "mkdir -p #{shared_path}/data/#{d}"
       run "chmod -f 777 #{shared_path}/data/#{d}"
     end
