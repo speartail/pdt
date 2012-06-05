@@ -142,6 +142,19 @@ end
 # TODO create database dump/restore
 namespace :db do
 
+  desc 'Create the DB'
+  task :create do
+    puts 'NOTE, this does not work unless db_host == localhost'
+    [
+      "create database #{db_name};",
+      "create user '#{db_user}'@'#{db_host}' identified by '#{db_pass}';",
+      "grant all on #{db_name}.* to '#{db_user}'@'#{db_host}';",
+      "flush privileges;"
+    ].each do |sql|
+      run "echo \"#{sql}\" | #{mysql}"
+    end
+  end
+
   namespace :local do
     task :dump do ; end
     task :restore do ; end
