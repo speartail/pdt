@@ -12,6 +12,10 @@ set :db_pass, ''
 set :db_prefix, 'wp_'   # WordPress default
 set :db_prefix, 'modx_' # MODx default
 
+# fastcgi
+# set :fastcgi, '127.0.0.1:9000'
+set :fastcgi, 'unix:/var/run/php-fastcgi/php-fastcgi.socket';
+
 set :srcdir, "/home/#{user}/shared/#{host}"
 set :appdir, "/home/#{user}/#{host}"
 set :deploy_to, "#{srcdir}"

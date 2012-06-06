@@ -182,6 +182,11 @@ namespace :content do
     return sql
   end
 
+  # Copy in locally changed emails
+  task :emails do
+    run "cp -r #{release_path}/data/emails/* #{current_path}/public/app/locale/#{mag_locale}/template/email"
+  end
+
 end
 
 namespace :db do
@@ -213,7 +218,19 @@ namespace :mode do
   end
 end
 
-# do not call this user as it clashes with the user variable
+namespace :shared do
+
+  desc 'Create shared directories'
+  task :setup do
+    [ 'app/etc', 'errors' ].each do |d|
+      run "mkdir -p #{shared_path}/#{d}"
+      run "chmod -f 775 #{shared_path}/#{d}"
+    end
+  end
+
+end
+
+# NOTE - do NOT call this user as it clashes with the user variable
 namespace :users do
 
   namespace :admin do

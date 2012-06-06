@@ -25,10 +25,10 @@ default_run_options[:pty] = true
 # also allow ForwardAgent in $HOME/.ssh/config
 ssh_options[:forward_agent] = true
 
-before 'app:setup', 'app:prepare'
+before 'app:setup', 'app:prepare', 'shared:setup'
 before 'deploy:setup', 'config:bash', 'config:tmux', 'config:mysql', 'cache:setup'
 after  'deploy:update_code', 'app:permissions', 'cache:symlink', 'cache:clear', 'app:symlink'
-after  'app:symlink', 'db:seed' #, 'content:pages' # too dangerous when in production
+after  'app:symlink', 'content:emails', 'db:seed' #, 'content:pages' # too dangerous when in production
 after  'db:restore', 'db:config' # db:config is where we do DB contents replacements
 
 def random_chars(length = 64)

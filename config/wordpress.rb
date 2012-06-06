@@ -90,6 +90,8 @@ namespace :content do
   def generate_page_meta_sql(page_meta, remote_file)
     raise NotImplementedError, 'Check magento for how this is done!'
   end
+
+  task :emails do ; end
 end
 
 namespace :db do
@@ -112,6 +114,13 @@ namespace :db do
       run %Q[#{mysql} -e "#{sql}"]
     end
   end
+end
+
+namespace :shared do
+
+  desc 'Create shared directories'
+  task :setup do ; end
+
 end
 
 def generate_keys
