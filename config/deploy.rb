@@ -144,6 +144,7 @@ namespace :db do
 
   desc 'Create the DB'
   task :create do
+    puts 'ERROR, this does not work as the user has not been created yet'
     puts 'NOTE, this does not work unless db_host == localhost'
     [
       "create database #{db_name};",
