@@ -184,7 +184,9 @@ namespace :content do
 
   # Copy in locally changed emails
   task :emails do
-    run "cp -r #{release_path}/data/emails/* #{current_path}/public/app/locale/#{mag_locale}/template/email"
+    if remote_file_exists? File.join(release_path, 'data', 'emails')
+      run "cp -r #{release_path}/data/emails/* #{current_path}/public/app/locale/#{mag_locale}/template/email"
+    end
   end
 
 end
