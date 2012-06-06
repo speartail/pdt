@@ -55,6 +55,16 @@ fi
     |, File.join('/home', user, '.bash_profile')
   end
 
+  desc 'Generate the various config pieces from templates'
+  task :generate, roles: :web do
+    run "mkdir -p #{shared_path}/config/#{stage}"
+    Dir.glob(File.join(File.dirname(__FILE__), '..', 'templates', '*.erb')).each do |t|
+      template = File.read(t)
+      buffer   = ERB.new(template).result(binding)
+      put buffer, "#{shared_path}/config/#{stage}/#{File.basename(t, '.erb')}"
+    end
+  end
+
   desc 'Configure tmux'
   task :tmux do
     upload('~/.tmux.conf', '~/.tmux.conf') if File.exists?('~/.tmux.conf')
