@@ -166,11 +166,6 @@ namespace :db do
     end
   end
 
-  namespace :local do
-    task :dump do ; end
-    task :restore do ; end
-  end
-
   desc "Seed the data stored in 'db/seed/*.sql - happens automatically on deploy'"
   task :seed do
     Dir.glob(File.join(Dir.pwd, 'data', 'db', 'seed', '*.sql')).each do |f|
@@ -185,6 +180,17 @@ namespace :db do
     end
   end
 
+  desc 'Drop the database - DESTRUCTIVE'
+  task :drop, :roles => [ :db ] do
+    puts 'This is a highly DESTRUCTIVE operation'
+    if force.to_s.upcase == 'YES'
+      sql = "drop database #{db_name};"
+      run "echo #{sql} | #{mysql}"
+    else
+      puts "Please pass '-s force=yes' to actually do it"
+    end
+  end
+
   desc 'Dump the remote database'
   task :dump, :roles => [ :db ] do
     run %Q[mysqldump -h#{db_host} -u#{db_user} #{db_name} > /home/#{user}/#{db_name}.sql]
@@ -195,7 +201,25 @@ namespace :db do
     run %Q[bzip2 /home/#{user}/#{db_name}.sql]
   end
 
-  task :restore, :roles => [ :db ] do ; end
+  desc 'Load a DB from a backup file - DESTRUCTIVE'
+  task :restore, :roles => [ :db ] do
+    puts 'This is a highly DESTRUCTIVE operation'
+    if force.to_s.upcase == 'YES'
+      transaction do
+        file = "/tmp/#{random_chars 12}_db.sql"
+        upload db_file, file
+        top.db.drop
+        [
+          "create database #{db_name};",
+        ].each do |sql|
+            run "echo \"#{sql}\" | #{mysql}"
+          end
+          run "#{mysql} #{db_name} < #{file}"
+      end
+    else
+      puts "Please pass '-s force=yes' to actually do it"
+    end
+  end
 
   desc 'Download the remote database'
   task :pull do
