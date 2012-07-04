@@ -36,6 +36,7 @@ namespace :app do
     run "ln -nfs #{shared_path}/app/etc/local.xml #{release_path}/public/app/etc/local.xml"
     run "ln -nfs #{shared_path}/errors/local.xml #{release_path}/public/errors/local.xml"
     run "ln -nfs #{release_path}/public/lib/Zend/Locale/Data/en_US.xml #{release_path}/public/lib/Zend/Locale/Data/en_us.xml"
+    run "ln -nfs #{current_path}/.modman #{release_path}/public/.modman"
   end
 
   desc "Set permissions"
