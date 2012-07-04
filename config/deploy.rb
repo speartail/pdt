@@ -19,6 +19,7 @@ set :deploy_via, :remote_cache
 set :scm, :git
 set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
+set :git_enable_submodules, 1
 
 # this is critical as first deploy will otherwise fail with a 'Host key verification failed'
 default_run_options[:pty] = true
