@@ -12,6 +12,7 @@ gem 'caplock'
 gem 'favicon_maker'
 gem 'foreman'
 gem 'livereload'
+gem 'net-ssh', '~> 2.4.0' # dependency of cap but v2.5.1 is broken
 gem 'rake'
 gem 'rack-livereload'
 gem 'taps'
@@ -37,8 +38,8 @@ gem 'guard-bundler'
 gem 'guard-compass'
 # gem 'guard-sass'
 gem 'guard-shell'
-gem 'libnotify'         # for guard
-gem 'rb-inotify'        # for guard
+gem 'libnotify'                # for guard
+gem 'rb-inotify', '~> 0.8.8'   # for guard
 
 # php support
 gem 'rack-legacy'
