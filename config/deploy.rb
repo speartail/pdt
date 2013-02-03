@@ -36,6 +36,10 @@ def random_chars(length = 64)
   return rand(36**length).to_s(36)
 end
 
+def quote(str)
+  str.gsub(/\\|'/) { |c| "\\#{c}" }
+end
+
 def upload_and_run_sql(local_file)
   rem = "/tmp/#{random_chars 8}_#{File.basename local_file}"
   upload local_file, rem
