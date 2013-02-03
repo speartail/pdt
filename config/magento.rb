@@ -143,10 +143,11 @@ namespace :content do
   TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
   def generate_item_sql(table, item, file)
+    contents = quote(File.open(file).gets)
     sql=%Q[
       UPDATE #{table}
       SET
-        content = '$(cat #{file})',
+        content = '#{contents}',
         update_time = '#{Time.now.strftime TIME_FORMAT}'
       WHERE
         identifier = '#{item}';]
