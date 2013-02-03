@@ -121,8 +121,7 @@ namespace :content do
   task :meta do
     root_dir = File.join(Dir.pwd, 'data', 'pages')
     begin
-      pages = YAML.load_file(File.join(root_dir, 'pages.yml'))
-      pages.each do |page|
+      YAML.load_file(File.join(root_dir, 'pages.yml')).each do |page|
         run %Q[#{mysql} -e "#{generate_page_meta_sql(page)}"]
       end
     rescue
