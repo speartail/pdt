@@ -19,3 +19,8 @@ set :fastcgi, 'unix:/var/run/php-fastcgi/php-fastcgi.socket';
 set :srcdir, "/home/#{user}/shared/#{host}"
 set :appdir, "/home/#{user}/#{host}"
 set :deploy_to, "#{srcdir}"
+
+# :copy for production environments we do not control
+#
+# set :deploy_via :remote_cache
+set :deploy_via :copy

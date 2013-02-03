@@ -15,7 +15,8 @@ load 'config/common' # must happen after the app specific loading due to :applic
 load 'config/project' # place all overrides here
 
 set :copy_exclude, [ '.git' ]
-set :deploy_via, :remote_cache
+# set :deploy_via, :remote_cache
+set :deploy_via, :copy
 set :scm, :git
 set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
