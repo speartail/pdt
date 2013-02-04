@@ -1,5 +1,6 @@
 require 'capistrano/php'
 require 'fileutils'
+require 'mysql' # should probably be mysql2 eventually
 require 'yaml'
 set :stages, %w(local dev preprod prod)
 set :default_stage, 'local'
@@ -16,7 +17,7 @@ load 'config/project' # place all overrides here
 
 set :copy_exclude, [ '.git' ]
 # set :deploy_via, :remote_cache
-set :deploy_via, :copy
+set :deploy_via, :copy # do not leave files behind as this is being handed over to others
 set :scm, :git
 set :shared_children, [] # we don't need system, log, pids
 set :use_sudo, false
@@ -38,7 +39,7 @@ def random_chars(length = 64)
 end
 
 def quote(str)
-  str.gsub(/\\|'/) { |c| "\\#{c}" }
+  Mysql.escape_string(str.to_s)
 end
 
 def upload_and_run_sql(local_file)
@@ -133,10 +134,8 @@ namespace :content do
   desc 'Load CMS pages'
   task :pages do
     root_dir = File.join(Dir.pwd, 'data', 'pages')
-    Dir.glob(File.join(root_dir, '*.html')).each do |p|
-      page = File.basename(p).gsub('.html', '')
-      file = "/tmp/#{random_chars 12}_#{page}"
-      upload p, file
+    Dir.glob(File.join(root_dir, '*.html')).each do |file|
+      page = File.basename(file).gsub('.html', '')
       run %Q[#{mysql} -e "#{generate_page_sql(page, file)}"]
     end
   end
@@ -144,10 +143,8 @@ namespace :content do
   desc 'Load CMS blocks (if supported)'
   task :blocks do
     root_dir = File.join(Dir.pwd, 'data', 'blocks')
-    Dir.glob(File.join(root_dir, '*.html')).each do |b|
-      block = File.basename(b).gsub('.html', '')
-      file = "/tmp/#{random_chars 12}_#{block}"
-      upload block, file
+    Dir.glob(File.join(root_dir, '*.html')).each do |file|
+      block = File.basename(file).gsub('.html', '')
       run %Q[#{mysql} -e "#{generate_block_sql(block, file)}"]
     end
   end
@@ -159,6 +156,11 @@ namespace :db do
 
   desc 'Create the DB'
   task :create do
+    run "mysqladmin create #{db_name}"
+  end
+
+  desc 'Create the DB user'
+  task :create_user do
     puts 'ERROR, this does not work as the user has not been created yet'
     puts 'NOTE, this does not work unless db_host == localhost'
     [
@@ -188,12 +190,7 @@ namespace :db do
   desc 'Drop the database - DESTRUCTIVE'
   task :drop, :roles => [ :db ] do
     puts 'This is a highly DESTRUCTIVE operation'
-    if force.to_s.upcase == 'YES'
-      sql = "drop database #{db_name};"
-      run "echo #{sql} | #{mysql}"
-    else
-      puts "Please pass '-s force=yes' to actually do it"
-    end
+    run "mysqladmin drop #{db_name} -f -f"
   end
 
   desc 'Dump the remote database'
@@ -206,23 +203,22 @@ namespace :db do
     run %Q[bzip2 /home/#{user}/#{db_name}.sql]
   end
 
+  desc 'Uncompress the remote database'
+  task :uncompress, :roles => [ :db ] do
+    run %Q[bunzip2 /home/#{user}/#{db_name}.sql.bz2]
+  end
+
   desc 'Load a DB from a backup file - DESTRUCTIVE'
   task :restore, :roles => [ :db ] do
     puts 'This is a highly DESTRUCTIVE operation'
-    if force.to_s.upcase == 'YES'
-      transaction do
-        file = "/tmp/#{random_chars 12}_db.sql"
-        upload db_file, file
-        top.db.drop
-        [
-          "create database #{db_name};",
-        ].each do |sql|
-            run "echo \"#{sql}\" | #{mysql}"
-          end
-          run "#{mysql} #{db_name} < #{file}"
-      end
-    else
-      puts "Please pass '-s force=yes' to actually do it"
+    transaction do
+      db_file = %Q[#{db_name}.sql.bz2]
+      file = "/tmp/#{random_chars 12}_db.sql"
+      upload db_file, file + '.bz2'
+      top.db.drop
+      top.db.create
+      run "bunzip2 #{file}.bz2"
+      run "#{mysql} < #{file}"
     end
   end
 

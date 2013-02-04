@@ -143,10 +143,11 @@ namespace :content do
   TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
   def generate_item_sql(table, item, file)
+    contents = quote(File.open(file).gets)
     sql=%Q[
       UPDATE #{table}
       SET
-        content = '#{quote(File.open(file).gets)}',
+        content = '#{contents}',
         update_time = '#{Time.now.strftime TIME_FORMAT}'
       WHERE
         identifier = '#{item}';]
@@ -154,12 +155,12 @@ namespace :content do
     return sql
   end
 
-  def generate_page_sql(page, remote_file)
-    generate_item_sql 'cms_page', page, remote_file
+  def generate_page_sql(page, file)
+    generate_item_sql 'cms_page', page, file
   end
 
-  def generate_block_sql(block, remote_file)
-    generate_item_sql 'cms_block', block, remote_file
+  def generate_block_sql(block, file)
+    generate_item_sql 'cms_block', block, file
   end
 
   def generate_page_meta_sql(page_meta)

@@ -79,15 +79,15 @@ end
 
 namespace :content do
 
-  def generate_page_sql(page, remote_file)
+  def generate_page_sql(page, file)
     raise NotImplementedError, 'Check magento for how this is done!'
   end
 
-  def generate_block_sql(block, remote_file)
+  def generate_block_sql(block, file)
     raise NotImplementedError, 'Check magento for how this is done!'
   end
 
-  def generate_page_meta_sql(page_meta, remote_file)
+  def generate_page_meta_sql(page_meta, file)
     raise NotImplementedError, 'Check magento for how this is done!'
   end
 
