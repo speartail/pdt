@@ -142,17 +142,40 @@ namespace :content do
 
   TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-  def generate_item_sql(table, item, file)
-    contents = quote(File.open(file).gets)
-    sql=%Q[
-      UPDATE #{table}
-      SET
-        content = '#{contents}',
-        update_time = '#{Time.now.strftime TIME_FORMAT}'
-      WHERE
-        identifier = '#{item}';]
+  def generate_item_sql(table, item, file = nil, options = {})
 
-    return sql
+    def clean_hash(h)
+      h.delete_if { |k,v| %w[ identifier page_id ].include?(k) }
+      return h.sort
+    end
+
+    def hash_to_sql(h)
+      h, sql = clean_hash(h), ''
+      return '' if h.empty?
+      h.each_pair { |k,v| sql="#{k} = '#{v}', #{sql}" }
+      return sql.to_s.gsub(/,\s+$/, '') + ','
+      #return sql
+    end
+
+    def file_contents(file)
+      return nil if file.nil?
+      return quote(File.open(file).gets)
+    end
+
+    h = clean_hash(options)
+    contents = file_contents(file)
+    time = Time.now.strftime TIME_FORMAT
+    return %Q[
+      UPDATE
+        #{table}
+      SET
+        #{file.nil? ? "" : "content = '#{contents}',"}
+        #{hash_to_sql(h)}
+        creation_time = '#{time}',
+        update_time = '#{time}'
+      WHERE
+        identifier = '#{item}';
+    ]
   end
 
   def generate_page_sql(page, file)
@@ -164,6 +187,9 @@ namespace :content do
   end
 
   def generate_page_meta_sql(page_meta)
+    # TODO: somewhere we end up running .each_pair on an Array
+    # generate_item_sql 'cms_page', page_meta['identifier'], nil, page_meta
+
     def hash_to_sql(h)
       sql = ''
       h.each_pair do |k,v|
@@ -171,6 +197,7 @@ namespace :content do
       end
       sql.to_s.gsub(/,\s+$/, '')
     end
+
     t = Time.now.strftime TIME_FORMAT
     sql=%Q[
       UPDATE cms_page

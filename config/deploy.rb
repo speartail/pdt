@@ -2,7 +2,7 @@ require 'capistrano/php'
 require 'fileutils'
 require 'mysql' # should probably be mysql2 eventually
 require 'yaml'
-set :stages, %w(local dev preprod prod)
+set :stages, %w(local dev preprod prod new_prod)
 set :default_stage, 'local'
 require 'capistrano/ext/multistage'
 
@@ -125,8 +125,8 @@ namespace :content do
       YAML.load_file(File.join(root_dir, 'pages.yml')).each do |page|
         run %Q[#{mysql} -e "#{generate_page_meta_sql(page)}"]
       end
-    rescue
-      puts 'Unable to load pages.yml. Continuing...'
+    rescue Exception => e
+      puts "#{e.message}: Unable to load pages.yml. Continuing..."
     end
     puts 'WARNING! You MIGHT have to resave all pages for this to work!'
   end
