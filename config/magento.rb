@@ -259,6 +259,11 @@ namespace :shared do
     end
   end
 
+  desc 'Copy shared media'
+  task :copy do
+    run "cp --update --recursive #{release_path}/data/media/* #{shared_path}/data/media/"
+  end
+
 end
 
 # NOTE - do NOT call this user as it clashes with the user variable
