@@ -261,7 +261,12 @@ namespace :shared do
 
   desc 'Copy shared media'
   task :copy do
-    run "cp --update --recursive #{release_path}/data/media/* #{shared_path}/data/media/"
+    run "cp --update --recursive #{current_path}/data/media/* #{shared_path}/data/media/"
+  end
+
+  desc 'Push/upload shared media directly'
+  task :push do
+    upload "data/media/", "#{shared_path}/data/", { via: :scp, recursive: true }
   end
 
 end
